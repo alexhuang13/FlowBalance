@@ -1,0 +1,8 @@
+name: MathArena AIME 2025
+description: The American Invitational Mathematics Exam (AIME) is a two-part 15-question, 3-hour examination used to determine qualification for the USA Mathematical Olympiad (USAMO). Each answer is an integer between 0 and 999 inclusive.
+evaluation_framework: math-arena
+
+tasks:
+  - id: MathArena/aime_2025
+    config: default
+    split: train

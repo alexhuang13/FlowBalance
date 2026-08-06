@@ -1,0 +1,167 @@
+# FlowOPSD trainer config. Defaults match the Run28 training setup.
+# eta_R is the intended ablation variable; run_math_flowopsd.sh supplies runtime paths.
+
+hydra:
+  searchpath:
+    - file://verl/verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+data:
+  train_batch_size: 32
+  gen_batch_size: ${data.train_batch_size}
+  max_prompt_length: 2048
+  max_response_length: 8192
+  filter_overlong_prompts: True
+  shuffle: True
+  trust_remote_code: True
+  apply_chat_template_kwargs: { "enable_thinking": true }
+
+actor_rollout_ref:
+  nccl_timeout: 600
+
+  actor:
+    _target_: recipe.flowopsd.flowopsd_config.FlowOPSDFSDPActorConfig
+
+    ppo_mini_batch_size: 128
+    ppo_micro_batch_size_per_gpu: 1
+    ppo_max_token_len_per_gpu: 10240
+    clip_ratio_high: 0.28
+    clip_ratio_low: 0.2
+    use_kl_loss: False
+
+    policy_loss:
+      loss_mode: flowopsd
+
+    self_distillation:
+      _target_: recipe.sdpo.sdpo_config.SDPOSelfDistillationConfig
+      full_logit_distillation: False
+      alpha: 1.0
+      success_reward_threshold: 0.5
+      distillation_topk: null
+      distillation_add_tail: True
+      max_reprompt_len: 10240
+      reprompt_truncation: right
+      dont_reprompt_on_self_success: True
+      remove_thinking_from_demonstration: False
+      is_clip: null
+      include_environment_feedback: False
+      environment_feedback_only_without_solution: False
+      solution_source: group_only
+      reprompt_template: |-
+        {prompt}{solution}{feedback}
+
+        Correctly solve the original question.
+      solution_template: |-
+
+        Correct solution:
+
+        {successful_previous_attempt}
+
+      feedback_template: |-
+
+        The following is feedback from your unsuccessful earlier attempt:
+
+        {feedback_raw}
+
+    flow_opsd:
+      _target_: recipe.flowopsd.flowopsd_config.FlowOPSDConfig
+      beta_q: 1.0
+      eta_R: 15.0
+      beta_q_start: null
+      beta_q_end: null
+      eta_R_start: null
+      eta_R_end: null
+      schedule_steps: 0
+      flow_gap_clip_low: 5.0
+      flow_gap_clip_high: 5.0
+      importance_ratio_cap: 1.2
+      residual_length_scale: 0.0
+      clip_B: 4.0
+      rho: 1.0
+      lambda_kl: 0.0
+      use_flowopsd_kl: False
+      z_estimator: vargrad_group
+      reference_source: frozen_ref
+      objective: tb
+      reward_type: grpo_advantage
+      gate_no_context: drop
+      min_group_valid: 2
+      w_clip: null
+      w_min: 0.0
+      w_max: 10.0
+
+    optim:
+      lr: 1e-6
+      lr_warmup_steps: 10
+
+  ref:
+    log_prob_micro_batch_size_per_gpu: 1
+    log_prob_use_dynamic_bsz: True
+    log_prob_max_token_len_per_gpu: 10240
+    ulysses_sequence_parallel_size: 8
+    fsdp_config:
+      param_offload: True
+
+  model:
+    trust_remote_code: True
+
+  rollout:
+    name: vllm
+    n: 8
+    calculate_log_probs: True
+    gpu_memory_utilization: 0.55
+    log_prob_micro_batch_size_per_gpu: 1
+    tensor_model_parallel_size: 1
+    max_num_batched_tokens: 10240
+    max_model_len: 10240
+    temperature: 1.0
+    top_p: 1
+    top_k: -1
+    val_kwargs:
+      top_p: 0.95
+      temperature: 0.6
+      n: 1
+      do_sample: True
+
+algorithm:
+  adv_estimator: grpo
+  norm_adv_by_std_in_grpo: True
+  use_kl_in_reward: False
+  rollout_correction:
+    rollout_is: null
+    rollout_is_threshold: 2.0
+
+custom_reward_function:
+  path: core/utils/reward_score/sdpo_math_feedback_score.py
+  name: compute_score
+
+reward_model:
+  reward_manager: dapo
+  use_reward_loop: False
+  # Run28 did not apply an overlong reward penalty. Keep raw math score in [0, 1].
+  reward_kwargs:
+    max_resp_len: 8192
+    overlong_buffer_cfg:
+      enable: False
+      len: 0
+      penalty_factor: 0.0
+      log: False
+  api_endpoints:
+    - name: "empty"
+      endpoint: "xxxx"
+
+trainer:
+  project_name: verl-flowopsd
+  n_gpus_per_node: 8
+  nnodes: 1
+  save_freq: 10
+  test_freq: 1
+  log_val_generations: 4
+  max_actor_ckpt_to_keep: null
+  total_epochs: 500
+  total_training_steps: null
+  val_before_train: False
+  logger: ["console", "wandb"]

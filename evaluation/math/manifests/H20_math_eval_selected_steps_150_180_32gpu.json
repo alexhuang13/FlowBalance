@@ -1,0 +1,49 @@
+{
+  "Token": "vgfKiIjHYtCZNxwSfCZBvA",
+  "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "model_local_file_path": "/apdcephfs_gy4/share_303378103/user/audenhuang/resources_access",
+  "host_num": 4,
+  "host_gpu_num": 8,
+  "project_name": "lifelong learning",
+  "common": {
+    "belong_project_name": "lifelong learning",
+    "project_name": "lifelong learning",
+    "description_info": "3 algorithms x steps 150/180: all benchmarks pass@1, AIME24-26 pass@16; 4x8 H20"
+  },
+  "image_full_name": "mirrors.tencent.com/stable-rl/verl0.7.0:v1",
+  "init_cmd": "bash /apdcephfs_gy4/share_303378103/user/audenhuang/stable_rl/scripts/init.sh",
+  "GPUName": "H20",
+  "enable_rdma": false,
+  "cuda_version": "12.0",
+  "keep_alive": true,
+  "is_elasticity": false,
+  "enable_vscode": false,
+  "start_cmd": "bash -lc 'export CEPH_ROOT=/apdcephfs_gy4/share_303378103/user/audenhuang; export STABLE_RL_DIR=/apdcephfs_gy4/share_303378103/user/audenhuang/stable_rl; export AUTO_TRAIN=1; export RUN_SCRIPT=run_math_benchmark_selected_steps_ray.sh; export NNODES=4; export N_GPUS_PER_NODE=8; export START_RAY_WORKERS_WITH_MPIRUN=0; export RUNTIME_ENV_SRC=/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/runtime_env.yaml; bash /apdcephfs_gy4/share_303378103/user/audenhuang/launch/start.sh'",
+  "exec_start_in_all_mpi_pods": true,
+  "belong_project_name": "Lifelong learning 算法探索实验-RL，文生文-强化学习:代码/数学/指令遵循等强化实验",
+  "description_info": "3 algorithms x steps 150/180: all benchmarks pass@1, AIME24-26 pass@16; 4x8 H20",
+  "envs": {
+    "HUNYUAN_TASK_CATEGORY": "LLM",
+    "HUNYUAN_TASK_DESCRIPTION": "LLM Agent Training",
+    "HUNYUAN_RESOURCE_USAGE": "experiment",
+    "HUNYUAN_TASK_MODEL_TYPE": "SFT",
+    "HUNYUAN_TASK_START_MODEL_TYPE": "8B热启",
+    "HUNYUAN_TASK_DOMAIN": "NLP",
+    "HUNYUAN_BASE_MODEL": "8B",
+    "HUNYUAN_OUTPUT_BASE_MODEL": "8B"
+  },
+  "mount_ceph_business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "dataset_params": {
+    "dataset_source": "plat_business_ceph",
+    "dataset_name": "CQ",
+    "path_info": {
+      "plat_business_cephs": [
+        {
+          "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+          "dst_path": "gy"
+        }
+      ]
+    }
+  },
+  "task_flag": "auden_math_benchmark_selected_steps_150_180_32gpu"
+}

@@ -1,0 +1,48 @@
+{
+  "Token": "vgfKiIjHYtCZNxwSfCZBvA",
+  "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "model_local_file_path": "/apdcephfs_gy4/share_303378103/user/audenhuang/resources_access",
+  "host_num": 4,
+  "host_gpu_num": 8,
+  "project_name": "lifelong learning",
+  "common": {
+    "belong_project_name": "lifelong learning",
+    "project_name": "lifelong learning",
+    "description_info": "SDPO Qwen3-8B rerun to step 180; save every 10 steps and retain checkpoints 150/160/170/180"
+  },
+  "image_full_name": "mirrors.tencent.com/stable-rl/verl0.7.0:v1",
+  "init_cmd": "bash /apdcephfs_gy4/share_303378103/user/audenhuang/stable_rl/scripts/init.sh",
+  "GPUName": "H20",
+  "enable_rdma": true,
+  "cuda_version": "12.0",
+  "keep_alive": true,
+  "is_elasticity": false,
+  "start_cmd": "bash -lc 'export CEPH_ROOT=/apdcephfs_gy4/share_303378103/user/audenhuang; export STABLE_RL_DIR=/apdcephfs_gy4/share_303378103/user/audenhuang/stable_rl; export DATA_ROOT=/apdcephfs_gy4/share_303378103/user/audenhuang/data; export MODEL_ROOT=/apdcephfs_gy4/share_303378103/user/audenhuang/models; export OUTPUT_ROOT=/apdcephfs_gy4/share_303378103/user/audenhuang/output; export AUTO_TRAIN=1; export EXP_NAME=SDPO-Qwen3-8B-math-strict-dapo17k-rerun-keep-step150-180; export CKPTS_DIR=/apdcephfs_gy4/share_303378103/user/audenhuang/output/verl-sdpo/SDPO-Qwen3-8B-math-strict-dapo17k-rerun-keep-step150-180; export TOTAL_TRAINING_STEPS=180; export SAVE_FREQ=10; export MAX_ACTOR_CKPT_TO_KEEP=4; export RESUME_MODE=disable; export RUN_SCRIPT=run_math_sdpo.sh; export TRAIN_FILE=/apdcephfs_gy4/share_303378103/user/audenhuang/data/rl/train_dapo17k.parquet; export TEST_FILE=/apdcephfs_gy4/share_303378103/user/audenhuang/data/rl/aime24_30_boxed.parquet; export MODEL_PATH=/apdcephfs_gy4/share_303378103/user/audenhuang/models/Qwen3-8B; export SP_SIZE=8; export MAX_RESPONSE_LENGTH=8192; export MAX_MODEL_LEN=10240; export MAX_REPROMPT_LEN=10240; export NNODES=4; export N_GPUS_PER_NODE=8; bash /apdcephfs_gy4/share_303378103/user/audenhuang/launch/start.sh'",
+  "exec_start_in_all_mpi_pods": true,
+  "belong_project_name": "Lifelong learning 算法探索实验-RL，文生文-强化学习:代码/数学/指令遵循等强化实验",
+  "description_info": "SDPO Qwen3-8B rerun to step 180; save every 10 steps and retain checkpoints 150/160/170/180",
+  "envs": {
+    "HUNYUAN_TASK_CATEGORY": "LLM",
+    "HUNYUAN_TASK_DESCRIPTION": "LLM Agent Training",
+    "HUNYUAN_RESOURCE_USAGE": "experiment",
+    "HUNYUAN_TASK_MODEL_TYPE": "SFT",
+    "HUNYUAN_TASK_START_MODEL_TYPE": "8B热启",
+    "HUNYUAN_TASK_DOMAIN": "NLP",
+    "HUNYUAN_BASE_MODEL": "8B",
+    "HUNYUAN_OUTPUT_BASE_MODEL": "8B"
+  },
+  "mount_ceph_business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "dataset_params": {
+    "dataset_source": "plat_business_ceph",
+    "dataset_name": "CQ",
+    "path_info": {
+      "plat_business_cephs": [
+        {
+          "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+          "dst_path": "gy"
+        }
+      ]
+    }
+  },
+  "task_flag": "auden_sdpo_qwen3_8b_rerun_keep_step150_180"
+}
