@@ -68,16 +68,16 @@ The result is not merely another teacher-imitation loss. It is a **probability-c
 
 For each prompt $x$, the rollout policy samples an on-policy group
 
-$$
+```math
 \mathcal{G}(x)=\{y^{(1)},\ldots,y^{(N)}\},
 \qquad y^{(i)}\sim\pi_{\mathrm{old}}(\cdot\mid x).
-$$
+```
 
 Here $\pi_{\mathrm{old}}$ is the rollout policy—the frozen behavior snapshot used to generate the current batch. A verifier supplies token-level scores and GRPO advantages. With the default `reward_type=grpo_advantage`, FlowSD reduces each response to the mean response advantage
 
-$$
+```math
 A(y)=\frac{1}{T}\sum_{t=1}^{T} A_t.
-$$
+```
 
 All target-side quantities below are computed without gradients.
 
@@ -87,25 +87,30 @@ During training, the teacher may see privileged context $c$, such as another suc
 
 For a response of length $T$, define the length-normalized sequence log-probability
 
-$$
-\ell_{\pi}(y\mid x,c)=
+```math
+\ell_{\pi}(y\mid x,c)
+=
 \frac{1}{T^{\rho}}
 \sum_{t=1}^{T}
 \log \pi(y_t\mid y_{<t},x,c).
-$$
+```
 
 The privileged gain is computed token by token before length normalization:
 
-$$
-G_{\mathrm{raw}}(y;x,c)=
+```math
+\begin{aligned}
+G_{\mathrm{raw}}(y;x,c)
+&=
 \frac{1}{T^{\rho}}
 \sum_{t=1}^{T}
-\operatorname{clip}\!\left(
-\log\pi_T(y_t\mid y_{<t},x,c)-
-\log\pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
+\operatorname{clip}\!\Bigl(
+\log \pi_T(y_t\mid y_{<t},x,c) \\
+&\qquad
+-\log \pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
 -B,B
-\right).
-$$
+\Bigr).
+\end{aligned}
+```
 
 The default configuration uses $B=4$ and $\rho=1$. If no usable privileged context is available, the sample is excluded from the default FlowSD target when $\beta_T>0$.
 
@@ -113,10 +118,11 @@ The default configuration uses $B=4$ and $\rho=1$. If no usable privileged conte
 
 Teacher preference alone is not treated as evidence of correctness. FlowSD reverses the teacher contribution for negative-advantage trajectories and removes it when the advantage is zero:
 
-$$
-G(y;x,c)=
+```math
+G(y;x,c)
+=
 G_{\mathrm{raw}}(y;x,c)\,\operatorname{sign}(A(y)).
-$$
+```
 
 Thus, positive verifier advantage preserves the teacher direction, negative advantage reverses it, and zero advantage disables the privileged term.
 
@@ -124,15 +130,13 @@ Thus, positive verifier advantage preserves the teacher direction, negative adva
 
 The implementation combines reference support, signed teacher gain, and verifier signal into a length-normalized target log-score
 
-$$
+```math
 \log \widetilde{F}(y;x,c)
 =
 \ell_{\mathrm{ref}}(y\mid x)
-+
-\beta_T G(y;x,c)
-+
-\eta_A R(y).
-$$
++\beta_T G(y;x,c)
++\eta_A R(y).
+```
 
 By default, $R(y)=A(y)$, $\beta_T=1$, and $\eta_A=15$. The alternative `reward_type=raw_score` uses the summed verifier score instead. This is the target-side score used by the profiled trajectory-balance regression. Because the implementation length-normalizes sequence log-probabilities, $\log\widetilde{F}$ should be read as a training score rather than as an exact unnormalized log-probability when $\rho>0$.
 
@@ -140,38 +144,37 @@ By default, $R(y)=A(y)$, $\beta_T=1$, and $\eta_A=15$. The alternative `reward_t
 
 Responses can share a normalization estimate only when they have the same problem and the same privileged context. For each valid group $g$, FlowSD profiles an additive baseline using the rollout policy:
 
-$$
+```math
 b_g
 =
 \frac{1}{|V_g|}
 \sum_{j\in V_g}
-\left[
+\Bigl[
 \ell_{\mathrm{old}}(y^{(j)}\mid x)
--
-\log\widetilde{F}(y^{(j)};x,c)
-\right],
-$$
+-\log \widetilde{F}(y^{(j)};x,c)
+\Bigr].
+```
 
 where $V_g$ is the set of valid responses in that group. The detached regression target for response $i$ is
 
-$$
+```math
 t_i
 =
 \log\widetilde{F}(y^{(i)};x,c)+b_g.
-$$
+```
 
 The current student minimizes the squared trajectory-balance residual
 
-$$
+```math
 \mathcal{L}_{\mathrm{FlowSD}}
 =
 \frac{1}{\sum_i m_i}
 \sum_i
 m_i
-\left[
+\Bigl[
 \ell_{\theta}(y^{(i)}\mid x)-t_i
-\right]^2,
-$$
+\Bigr]^2.
+```
 
 where $m_i$ masks samples without a valid target. The default loss is unweighted; optional clipped importance weights can be enabled in the configuration. Gradients pass only through $\ell_{\theta}$—not through rewards, advantages, teacher/reference scores, the profiled baseline, or the target.
 
@@ -253,9 +256,9 @@ The two-stage LLM-judge protocol:
 
 Correct-only Simpson diversity is
 
-$$
-D_{\mathrm{Simpson}}=1-\sum_k p_k^2,
-$$
+```math
+D_{\mathrm{Simpson}}=1-\sum_k p_k^2.
+```
 
 which is the probability that two sampled correct trajectories use different semantic strategies.
 
