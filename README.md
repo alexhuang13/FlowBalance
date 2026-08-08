@@ -133,30 +133,6 @@ which is the probability that two sampled correct trajectories use different sem
 
 ---
 
-## Ablations: both signals matter
-
-The default Qwen3-8B configuration uses $\eta_A=15$ and $\beta_T=1$.
-
-### Verifier coefficient $\eta_A$
-
-| `FLOWSD_ETA_R` | Five-benchmark avg. |
-|---:|---:|
-| 5 | 65.65 |
-| 10 | 65.41 |
-| **15** | **67.61** |
-
-### Teacher coefficient $\beta_T$
-
-| `FLOWSD_BETA_Q` | Five-benchmark avg. |
-|---:|---:|
-| **1** | **67.61** |
-| 2 | 66.48 |
-| 3 | 65.95 |
-
-The sweeps show that stronger shaping is not automatically better. The verifier and privileged-teacher terms must be balanced so that the target rewards correctness without over-concentrating around teacher-favored trajectories.
-
----
-
 ## Canonical implementation
 
 All public interfaces consistently use FlowSD/`flowsd`:
