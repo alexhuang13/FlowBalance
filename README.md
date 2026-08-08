@@ -68,95 +68,118 @@ The result is not merely another teacher-imitation loss. It is a **probability-c
 
 ## How FlowSD works
 
-For a prompt $x$, the policy samples an on-policy response group
+For each prompt $x$, the rollout policy samples an on-policy group
 
 $$
-\mathcal G=\{y^{(1)},\ldots,y^{(N)}\},
-\qquad y^{(i)}\sim\pi_\theta(\cdot\mid x).
+\mathcal{G}(x)=\{y^{(1)},\ldots,y^{(N)}\},
+\qquad y^{(i)}\sim\pi_{\mathrm{old}}(\cdot\mid x).
 $$
 
-A verifier produces terminal rewards and stopped group-relative advantages $A_i$. During training only, a privileged teacher may additionally observe a solution or feedback context $c$. The student rollout and evaluation policy see only the original prompt.
-
-### 1. Privileged trajectory gain
-
-The privileged teacher rescores the **same sampled tokens**; it does not generate a replacement answer. The clipped teacher-reference gain is
+Here $\pi_{\mathrm{old}}$ is the rollout policy—the frozen behavior snapshot used to generate the current batch. A verifier supplies token-level scores and GRPO advantages. With the default `reward_type=grpo_advantage`, FlowSD reduces each response to the mean response advantage
 
 $$
-\delta_t^T
+A(y)=\frac{1}{T}\sum_{t=1}^{T} A_t.
+$$
+
+All target-side quantities below are computed without gradients.
+
+### 1. Score the same trajectory with and without privileged context
+
+During training, the teacher may see privileged context $c$, such as another successful response from the same rollout group. The student never sees $c$. Both teacher passes score the **same sampled response** $y$; the teacher does not generate a replacement answer.
+
+For a response of length $T$, define the length-normalized sequence log-probability
+
+$$
+\ell_{\pi}(y\mid x,c)
 =
+\frac{1}{T^{\rho}}
+\sum_{t=1}^{T}
+\log \pi(y_t\mid y_{<t},x,c).
+$$
+
+The privileged gain is computed token by token before length normalization:
+
+$$
+G_{\mathrm{raw}}(y;x,c)
+=
+\frac{1}{T^{\rho}}
+\sum_{t=1}^{T}
 \operatorname{clip}\!\left(
-\log\pi_T(y_t\mid s_t,c)
+\log\pi_T(y_t\mid y_{<t},x,c)
 -
-\log\pi_{\mathrm{ref}}(y_t\mid s_t),
+\log\pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
 -B,B
-\right),
-$$
-
-and the complete-trajectory gain is
-
-$$
-G_T(y\mid x,c)
-=
-\frac{1}{T^\rho}\sum_{t=1}^{T}\delta_t^T.
-$$
-
-The default implementation uses $B=4$ and $\rho=1$, corresponding to a clipped mean log-probability gain.
-
-### 2. Verifier-calibrated sign gating
-
-A privileged teacher can be confident about a response that the verifier rejects. FlowSD therefore uses the verifier advantage to determine the direction of teacher pressure:
-
-$$
-E_{\mathrm{FlowSD}}(y)
-=
-\eta_A A(y)
-+
-\beta_TG_T(y)\operatorname{sign}(A(y)).
-$$
-
-- $A>0$: teacher support reinforces the trajectory.
-- $A<0$: the teacher contribution is reversed.
-- $A=0$: the teacher contribution is disabled.
-
-### 3. A reference-supported target distribution
-
-FlowSD defines
-
-$$
-p^*_{\mathrm{FlowSD}}(y\mid x,c)
-\propto
-\pi_{\mathrm{ref}}(y\mid x)
-\exp\!\left(
-\frac{E_{\mathrm{FlowSD}}(y\mid x,c)}{\tau}
 \right).
 $$
 
-The reference policy determines support, the verifier determines outcome utility, and the privileged teacher shapes relative mass inside the verifier-calibrated response space.
+The default configuration uses $B=4$ and $\rho=1$. If no usable privileged context is available, the sample is excluded from the default FlowSD target when $\beta_T>0$.
 
-### 4. Profiled trajectory balance
+### 2. Gate the teacher gain with verifier evidence
 
-The complete-response residual is
+Teacher preference alone is not treated as evidence of correctness. FlowSD reverses the teacher contribution for negative-advantage trajectories and removes it when the advantage is zero:
 
 $$
-\Delta_{\mathrm{TB}}(y)
+G(y;x,c)
 =
-\tau\log Z(x,c)
+G_{\mathrm{raw}}(y;x,c)\,\operatorname{sign}(A(y)).
+$$
+
+Thus, positive verifier advantage preserves the teacher direction, negative advantage reverses it, and zero advantage disables the privileged term.
+
+### 3. Construct the detached target score
+
+The implementation combines reference support, signed teacher gain, and verifier signal into a length-normalized target log-score
+
+$$
+\log \widetilde{F}(y;x,c)
+=
+\ell_{\mathrm{ref}}(y\mid x)
 +
-\tau\log\frac{\pi_\theta(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)}
--
-E_{\mathrm{FlowSD}}(y\mid x,c),
+\beta_T G(y;x,c)
++
+\eta_A R(y).
 $$
 
-and FlowSD minimizes
+By default, $R(y)=A(y)$, $\beta_T=1$, and $\eta_A=15$. The alternative `reward_type=raw_score` uses the summed verifier score instead. This is the target-side score used by the profiled trajectory-balance regression. Because the implementation length-normalizes sequence log-probabilities, $\log\widetilde{F}$ should be read as a training score rather than as an exact unnormalized log-probability when $\rho>0$.
+
+### 4. Profile the group normalization and fit the student
+
+Responses can share a normalization estimate only when they have the same problem and the same privileged context. For each valid group $g$, FlowSD profiles an additive baseline using the rollout policy:
 
 $$
-\mathcal L_{\mathrm{FlowSD}}
+b_g
 =
-\frac{1}{2N}\sum_{i=1}^{N}
-\Delta_{\mathrm{TB}}(y^{(i)})^2.
+\frac{1}{|V_g|}
+\sum_{j\in V_g}
+\left[
+\ell_{\mathrm{old}}(y^{(j)}\mid x)
+-
+\log\widetilde{F}(y^{(j)};x,c)
+\right],
 $$
 
-The implementation profiles the partition term from each rollout group, avoiding enumeration of the full response space. Rewards, advantages, teacher scores, reference scores, and the partition estimate are stopped; gradients pass only through current student log-probabilities.
+where $V_g$ is the set of valid responses in that group. The detached regression target for response $i$ is
+
+$$
+t_i
+=
+\log\widetilde{F}(y^{(i)};x,c)+b_g.
+$$
+
+The current student minimizes the squared trajectory-balance residual
+
+$$
+\mathcal{L}_{\mathrm{FlowSD}}
+=
+\frac{1}{\sum_i m_i}
+\sum_i
+m_i
+\left[
+\ell_{\theta}(y^{(i)}\mid x)-t_i
+\right]^2,
+$$
+
+where $m_i$ masks samples without a valid target. The default loss is unweighted; optional clipped importance weights can be enabled in the configuration. Gradients pass only through $\ell_{\theta}$—not through rewards, advantages, teacher/reference scores, the profiled baseline, or the target.
 
 ---
 
