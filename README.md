@@ -68,20 +68,20 @@ The result is not merely another teacher-imitation loss. It is a **probability-c
 
 ## How FlowSD works
 
-For a prompt \(x\), the policy samples an on-policy response group
+For a prompt $x$, the policy samples an on-policy response group
 
-\[
+$$
 \mathcal G=\{y^{(1)},\ldots,y^{(N)}\},
 \qquad y^{(i)}\sim\pi_\theta(\cdot\mid x).
-\]
+$$
 
-A verifier produces terminal rewards and stopped group-relative advantages \(A_i\). During training only, a privileged teacher may additionally observe a solution or feedback context \(c\). The student rollout and evaluation policy see only the original prompt.
+A verifier produces terminal rewards and stopped group-relative advantages $A_i$. During training only, a privileged teacher may additionally observe a solution or feedback context $c$. The student rollout and evaluation policy see only the original prompt.
 
 ### 1. Privileged trajectory gain
 
 The privileged teacher rescores the **same sampled tokens**; it does not generate a replacement answer. The clipped teacher-reference gain is
 
-\[
+$$
 \delta_t^T
 =
 \operatorname{clip}\!\left(
@@ -90,46 +90,46 @@ The privileged teacher rescores the **same sampled tokens**; it does not generat
 \log\pi_{\mathrm{ref}}(y_t\mid s_t),
 -B,B
 \right),
-\]
+$$
 
 and the complete-trajectory gain is
 
-\[
+$$
 G_T(y\mid x,c)
 =
 \frac{1}{T^\rho}\sum_{t=1}^{T}\delta_t^T.
-\]
+$$
 
-The default implementation uses \(B=4\) and \(\rho=1\), corresponding to a clipped mean log-probability gain.
+The default implementation uses $B=4$ and $\rho=1$, corresponding to a clipped mean log-probability gain.
 
 ### 2. Verifier-calibrated sign gating
 
 A privileged teacher can be confident about a response that the verifier rejects. FlowSD therefore uses the verifier advantage to determine the direction of teacher pressure:
 
-\[
+$$
 E_{\mathrm{FlowSD}}(y)
 =
 \eta_A A(y)
 +
 \beta_TG_T(y)\operatorname{sign}(A(y)).
-\]
+$$
 
-- \(A>0\): teacher support reinforces the trajectory.
-- \(A<0\): the teacher contribution is reversed.
-- \(A=0\): the teacher contribution is disabled.
+- $A>0$: teacher support reinforces the trajectory.
+- $A<0$: the teacher contribution is reversed.
+- $A=0$: the teacher contribution is disabled.
 
 ### 3. A reference-supported target distribution
 
 FlowSD defines
 
-\[
+$$
 p^*_{\mathrm{FlowSD}}(y\mid x,c)
 \propto
 \pi_{\mathrm{ref}}(y\mid x)
 \exp\!\left(
 \frac{E_{\mathrm{FlowSD}}(y\mid x,c)}{\tau}
 \right).
-\]
+$$
 
 The reference policy determines support, the verifier determines outcome utility, and the privileged teacher shapes relative mass inside the verifier-calibrated response space.
 
@@ -137,7 +137,7 @@ The reference policy determines support, the verifier determines outcome utility
 
 The complete-response residual is
 
-\[
+$$
 \Delta_{\mathrm{TB}}(y)
 =
 \tau\log Z(x,c)
@@ -145,16 +145,16 @@ The complete-response residual is
 \tau\log\frac{\pi_\theta(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)}
 -
 E_{\mathrm{FlowSD}}(y\mid x,c),
-\]
+$$
 
 and FlowSD minimizes
 
-\[
+$$
 \mathcal L_{\mathrm{FlowSD}}
 =
 \frac{1}{2N}\sum_{i=1}^{N}
 \Delta_{\mathrm{TB}}(y^{(i)})^2.
-\]
+$$
 
 The implementation profiles the partition term from each rollout group, avoiding enumeration of the full response space. Rewards, advantages, teacher scores, reference scores, and the partition estimate are stopped; gradients pass only through current student log-probabilities.
 
@@ -236,9 +236,9 @@ The two-stage LLM-judge protocol:
 
 Correct-only Simpson diversity is
 
-\[
+$$
 D_{\mathrm{Simpson}}=1-\sum_k p_k^2,
-\]
+$$
 
 which is the probability that two sampled correct trajectories use different semantic strategies.
 
@@ -258,13 +258,9 @@ which is the probability that two sampled correct trajectories use different sem
 
 ## Ablations: both signals matter
 
-The default Qwen3-8B configuration uses \(\eta_A=15\) and \(\beta_T=1\).
+The default Qwen3-8B configuration uses $\eta_A=15$ and $\beta_T=1$.
 
-<table>
-<tr>
-<td valign="top">
-
-### Verifier coefficient \(\eta_A\)
+### Verifier coefficient $\eta_A$
 
 | `FLOWSD_ETA_R` | Five-benchmark avg. |
 |---:|---:|
@@ -272,20 +268,13 @@ The default Qwen3-8B configuration uses \(\eta_A=15\) and \(\beta_T=1\).
 | 10 | 65.41 |
 | **15** | **67.61** |
 
-</td>
-<td valign="top">
-
-### Teacher coefficient \(\beta_T\)
+### Teacher coefficient $\beta_T$
 
 | `FLOWSD_BETA_Q` | Five-benchmark avg. |
 |---:|---:|
 | **1** | **67.61** |
 | 2 | 66.48 |
 | 3 | 65.95 |
-
-</td>
-</tr>
-</table>
 
 The sweeps show that stronger shaping is not automatically better. The verifier and privileged-teacher terms must be balanced so that the target rewards correctness without over-concentrating around teacher-favored trajectories.
 
