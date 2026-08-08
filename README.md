@@ -48,12 +48,34 @@ FlowSD asks the stronger question:
 
 FlowSD assigns four distinct roles:
 
-| Component | Role |
-|---|---|
-| **Verifier advantage** | Anchors the target to task success or failure |
-| **Privileged teacher gain** | Supplies dense information along an already sampled trajectory |
-| **Reference policy** | Preserves support from the pretrained reasoning distribution |
-| **Trajectory balance** | Converts local signals into normalized relative probabilities over complete responses |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Component</th>
+      <th align="center">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><strong>Verifier advantage</strong></td>
+      <td align="center">Anchors the target to task success or failure</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>Privileged teacher gain</strong></td>
+      <td align="center">Supplies dense information along an already sampled trajectory</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>Reference policy</strong></td>
+      <td align="center">Preserves support from the pretrained reasoning distribution</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>Trajectory balance</strong></td>
+      <td align="center">Converts local signals into normalized relative probabilities over complete responses</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 The result is not merely another teacher-imitation loss. It is a **probability-conserving reasoning equilibrium**: verified, teacher-supported trajectories gain mass; verifier-rejected trajectories are suppressed through sign gating; and multiple successful solution modes can coexist.
 
@@ -70,33 +92,148 @@ All main-table entries are step-180 results reported as mean ± sample standard 
 
 ### Qwen3-4B
 
-| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
-|---|---:|---:|---:|---:|---:|---:|
-| GRPO | 78.00 ± 1.83 | 26.67 ± 2.36 | **51.18 ± 1.36** | 92.04 ± 0.98 | 63.68 ± 0.58 | 62.31 |
-| RLSD | 73.33 ± 2.36 | 21.33 ± 3.80 | 50.29 ± 0.88 | 91.44 ± 0.52 | 61.36 ± 0.66 | 59.55 |
-| **FlowSD** | **80.00 ± 0.00** | **32.00 ± 2.98** | 50.51 ± 0.56 | **93.28 ± 0.59** | **65.49 ± 0.92** | **64.26** |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Method</th>
+      <th align="center">AIME24@16</th>
+      <th align="center">HMMT25</th>
+      <th align="center">Minerva</th>
+      <th align="center">MATH500</th>
+      <th align="center">OlympiadBench</th>
+      <th align="center"><strong>Avg.</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">GRPO</td>
+      <td align="center">78.00 ± 1.83</td>
+      <td align="center">26.67 ± 2.36</td>
+      <td align="center"><strong>51.18 ± 1.36</strong></td>
+      <td align="center">92.04 ± 0.98</td>
+      <td align="center">63.68 ± 0.58</td>
+      <td align="center">62.31</td>
+    </tr>
+    <tr>
+      <td align="center">RLSD</td>
+      <td align="center">73.33 ± 2.36</td>
+      <td align="center">21.33 ± 3.80</td>
+      <td align="center">50.29 ± 0.88</td>
+      <td align="center">91.44 ± 0.52</td>
+      <td align="center">61.36 ± 0.66</td>
+      <td align="center">59.55</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>FlowSD</strong></td>
+      <td align="center"><strong>80.00 ± 0.00</strong></td>
+      <td align="center"><strong>32.00 ± 2.98</strong></td>
+      <td align="center">50.51 ± 0.56</td>
+      <td align="center"><strong>93.28 ± 0.59</strong></td>
+      <td align="center"><strong>65.49 ± 0.92</strong></td>
+      <td align="center"><strong>64.26</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 **Takeaway:** FlowSD improves the five-benchmark average by **+1.95 points over GRPO** and **+4.71 over RLSD**, while leading four of the five reported benchmarks.
 
 ### Qwen3-8B
 
-| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
-|---|---:|---:|---:|---:|---:|---:|
-| GRPO | 85.33 ± 1.83 | 31.33 ± 7.67 | 52.87 ± 1.02 | 93.16 ± 0.83 | 64.78 ± 0.62 | 65.49 |
-| RLSD | 82.67 ± 3.65 | 28.00 ± 1.83 | 52.94 ± 1.38 | 93.44 ± 0.17 | 63.56 ± 1.19 | 64.12 |
-| **FlowSD** | **89.33 ± 1.49** | **34.67 ± 9.89** | **53.68 ± 0.78** | **93.52 ± 0.30** | **66.85 ± 0.46** | **67.61** |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Method</th>
+      <th align="center">AIME24@16</th>
+      <th align="center">HMMT25</th>
+      <th align="center">Minerva</th>
+      <th align="center">MATH500</th>
+      <th align="center">OlympiadBench</th>
+      <th align="center"><strong>Avg.</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">GRPO</td>
+      <td align="center">85.33 ± 1.83</td>
+      <td align="center">31.33 ± 7.67</td>
+      <td align="center">52.87 ± 1.02</td>
+      <td align="center">93.16 ± 0.83</td>
+      <td align="center">64.78 ± 0.62</td>
+      <td align="center">65.49</td>
+    </tr>
+    <tr>
+      <td align="center">RLSD</td>
+      <td align="center">82.67 ± 3.65</td>
+      <td align="center">28.00 ± 1.83</td>
+      <td align="center">52.94 ± 1.38</td>
+      <td align="center">93.44 ± 0.17</td>
+      <td align="center">63.56 ± 1.19</td>
+      <td align="center">64.12</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>FlowSD</strong></td>
+      <td align="center"><strong>89.33 ± 1.49</strong></td>
+      <td align="center"><strong>34.67 ± 9.89</strong></td>
+      <td align="center"><strong>53.68 ± 0.78</strong></td>
+      <td align="center"><strong>93.52 ± 0.30</strong></td>
+      <td align="center"><strong>66.85 ± 0.46</strong></td>
+      <td align="center"><strong>67.61</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 **Takeaway:** FlowSD obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 points over GRPO** and **+3.49 over RLSD**.
 
 ### Where the gains are strongest
 
-| Result | FlowSD | Best baseline | Gain |
-|---|---:|---:|---:|
-| Qwen3-4B average | **64.26** | 62.31 GRPO | **+1.95** |
-| Qwen3-8B average | **67.61** | 65.49 GRPO | **+2.12** |
-| Qwen3-8B AIME24@16 | **89.33** | 85.33 GRPO | **+4.00** |
-| Qwen3-8B OlympiadBench | **66.85** | 64.78 GRPO | **+2.07** |
-| Qwen3-4B HMMT25 | **32.00** | 26.67 GRPO | **+5.33** |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Result</th>
+      <th align="center">FlowSD</th>
+      <th align="center">Best baseline</th>
+      <th align="center">Gain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Qwen3-4B average</td>
+      <td align="center"><strong>64.26</strong></td>
+      <td align="center">62.31 GRPO</td>
+      <td align="center"><strong>+1.95</strong></td>
+    </tr>
+    <tr>
+      <td align="center">Qwen3-8B average</td>
+      <td align="center"><strong>67.61</strong></td>
+      <td align="center">65.49 GRPO</td>
+      <td align="center"><strong>+2.12</strong></td>
+    </tr>
+    <tr>
+      <td align="center">Qwen3-8B AIME24@16</td>
+      <td align="center"><strong>89.33</strong></td>
+      <td align="center">85.33 GRPO</td>
+      <td align="center"><strong>+4.00</strong></td>
+    </tr>
+    <tr>
+      <td align="center">Qwen3-8B OlympiadBench</td>
+      <td align="center"><strong>66.85</strong></td>
+      <td align="center">64.78 GRPO</td>
+      <td align="center"><strong>+2.07</strong></td>
+    </tr>
+    <tr>
+      <td align="center">Qwen3-4B HMMT25</td>
+      <td align="center"><strong>32.00</strong></td>
+      <td align="center">26.67 GRPO</td>
+      <td align="center"><strong>+5.33</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 These results support the distributional view: the largest gain appears on sampling-heavy AIME24 Pass@16, while improvements on Pass@1 benchmarks show that FlowSD does not trade broad single-sample accuracy for sampling performance.
 
@@ -119,11 +256,34 @@ D_{\mathrm{Simpson}}=1-\sum_k p_k^2.
 
 which is the probability that two sampled correct trajectories use different semantic strategies.
 
-| Method | Correct-only Simpson diversity | Relative to GRPO |
-|---|---:|---:|
-| GRPO | 0.1017 | 1.00× |
-| RLSD | 0.1456 | 1.43× |
-| **FlowSD** | **0.2194** | **2.16×** |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Method</th>
+      <th align="center">Correct-only Simpson diversity</th>
+      <th align="center">Relative to GRPO</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">GRPO</td>
+      <td align="center">0.1017</td>
+      <td align="center">1.00×</td>
+    </tr>
+    <tr>
+      <td align="center">RLSD</td>
+      <td align="center">0.1456</td>
+      <td align="center">1.43×</td>
+    </tr>
+    <tr>
+      <td align="center"><strong>FlowSD</strong></td>
+      <td align="center"><strong>0.2194</strong></td>
+      <td align="center"><strong>2.16×</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 <p align="center">
   <img src="assets/llm_strategy_diversity.png" width="58%" alt="LLM-judged semantic strategy diversity on AIME24">
@@ -137,16 +297,50 @@ which is the probability that two sampled correct trajectories use different sem
 
 All public interfaces consistently use FlowSD/`flowsd`:
 
-| Interface | Canonical name |
-|---|---|
-| Python package | `recipe.flowsd` |
-| Main module | `recipe.flowsd.main_flowsd` |
-| Config class | `FlowSDConfig` |
-| Hydra block | `actor_rollout_ref.actor.flowsd` |
-| Loss mode | `flowsd` |
-| Environment variables | `FLOWSD_*` |
-| Metric prefix | `flowsd/` |
-| Launcher | `recipe/flowsd/run_math_flowsd.sh` |
+<div align="center">
+<table>
+  <thead>
+    <tr>
+      <th align="center">Interface</th>
+      <th align="center">Canonical name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Python package</td>
+      <td align="center"><code>recipe.flowsd</code></td>
+    </tr>
+    <tr>
+      <td align="center">Main module</td>
+      <td align="center"><code>recipe.flowsd.main_flowsd</code></td>
+    </tr>
+    <tr>
+      <td align="center">Config class</td>
+      <td align="center"><code>FlowSDConfig</code></td>
+    </tr>
+    <tr>
+      <td align="center">Hydra block</td>
+      <td align="center"><code>actor_rollout_ref.actor.flowsd</code></td>
+    </tr>
+    <tr>
+      <td align="center">Loss mode</td>
+      <td align="center"><code>flowsd</code></td>
+    </tr>
+    <tr>
+      <td align="center">Environment variables</td>
+      <td align="center"><code>FLOWSD_*</code></td>
+    </tr>
+    <tr>
+      <td align="center">Metric prefix</td>
+      <td align="center"><code>flowsd/</code></td>
+    </tr>
+    <tr>
+      <td align="center">Launcher</td>
+      <td align="center"><code>recipe/flowsd/run_math_flowsd.sh</code></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ### Repository layout
 
