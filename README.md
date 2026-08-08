@@ -26,14 +26,6 @@ Many reasoning problems admit multiple valid solution strategies. Outcome-only r
 - **Stability:** FlowSD remains close to its peak over approximately 400 steps, while GRPO degrades after roughly step 180.
 - **Diversity:** FlowSD more than doubles GRPO's correct-only semantic strategy diversity on AIME24.
 
-<table>
-<tr>
-<td align="center"><b>Qwen3-4B average</b><br><h3>64.26</h3><sub>+1.95 over GRPO</sub></td>
-<td align="center"><b>Qwen3-8B average</b><br><h3>67.61</h3><sub>+2.12 over GRPO</sub></td>
-<td align="center"><b>Strategy diversity</b><br><h3>0.2194</h3><sub>2.16× GRPO</sub></td>
-</tr>
-</table>
-
 ---
 
 ## The central idea
