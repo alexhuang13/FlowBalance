@@ -88,8 +88,7 @@ During training, the teacher may see privileged context $c$, such as another suc
 For a response of length $T$, define the length-normalized sequence log-probability
 
 $$
-\ell_{\pi}(y\mid x,c)
-=
+\ell_{\pi}(y\mid x,c)=
 \frac{1}{T^{\rho}}
 \sum_{t=1}^{T}
 \log \pi(y_t\mid y_{<t},x,c).
@@ -98,13 +97,11 @@ $$
 The privileged gain is computed token by token before length normalization:
 
 $$
-G_{\mathrm{raw}}(y;x,c)
-=
+G_{\mathrm{raw}}(y;x,c)=
 \frac{1}{T^{\rho}}
 \sum_{t=1}^{T}
 \operatorname{clip}\!\left(
-\log\pi_T(y_t\mid y_{<t},x,c)
--
+\log\pi_T(y_t\mid y_{<t},x,c)-
 \log\pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
 -B,B
 \right).
@@ -117,8 +114,7 @@ The default configuration uses $B=4$ and $\rho=1$. If no usable privileged conte
 Teacher preference alone is not treated as evidence of correctness. FlowSD reverses the teacher contribution for negative-advantage trajectories and removes it when the advantage is zero:
 
 $$
-G(y;x,c)
-=
+G(y;x,c)=
 G_{\mathrm{raw}}(y;x,c)\,\operatorname{sign}(A(y)).
 $$
 
