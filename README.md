@@ -102,33 +102,6 @@ These results support the distributional view: the largest gain appears on sampl
 
 ---
 
-## Faster and more stable optimization
-
-The paper reports two optimization advantages on Qwen3-8B under matched rollout and evaluation budgets:
-
-| Property | FlowSD | GRPO |
-|---|---:|---:|
-| Steps to AIME24 validation accuracy 0.5 | **~100** | ~143 |
-| Relative speed | **1.43× faster** | 1.00× |
-| Late-training behavior | Remains near peak through ~400 steps | Degrades sharply after ~180 steps |
-
-FlowSD's normalized trajectory target provides a stable destination for probability mass, rather than repeatedly applying local reward pressure without specifying where the final response distribution should settle.
-
-<table>
-<tr>
-<td width="50%" align="center">
-<img src="assets/llm_training_acceleration.png" width="96%" alt="FlowSD training acceleration on AIME24">
-<br><sub><b>Training acceleration.</b> FlowSD reaches the target validation accuracy about 1.43× faster than GRPO.</sub>
-</td>
-<td width="50%" align="center">
-<img src="assets/llm_training_stability.png" width="96%" alt="FlowSD long-run training stability">
-<br><sub><b>Training stability.</b> FlowSD remains near peak performance while GRPO degrades after roughly step 180.</sub>
-</td>
-</tr>
-</table>
-
----
-
 ## More than accuracy: strategy diversity
 
 A reasoning model can produce many correct samples that are merely surface-level rewrites of one dominant strategy. The paper therefore evaluates **semantic strategy diversity**, not lexical diversity.
