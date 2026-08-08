@@ -1,8 +1,6 @@
 <div align="center">
 
-# FlowSD
-
-### Trajectory-Balanced On-Policy Self-Distillation
+# FlowSD: Trajectory-Balanced On-Policy Self-Distillation
 
 **Learn a distribution over correct reasoning trajectories—not just one correct answer.**
 
