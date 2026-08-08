@@ -98,18 +98,16 @@ For a response of length $T$, define the length-normalized sequence log-probabil
 The privileged gain is computed token by token before length normalization:
 
 ```math
-\begin{aligned}
 G_{\mathrm{raw}}(y;x,c)
-&=
+=
 \frac{1}{T^{\rho}}
 \sum_{t=1}^{T}
-\operatorname{clip}\!\Bigl(
-\log \pi_T(y_t\mid y_{<t},x,c) \\
-&\qquad
--\log \pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
+\mathrm{clip}\!\left(
+\log \pi_T(y_t\mid y_{<t},x,c)
+-
+\log \pi_{\mathrm{ref}}(y_t\mid y_{<t},x),
 -B,B
-\Bigr).
-\end{aligned}
+\right).
 ```
 
 The default configuration uses $B=4$ and $\rho=1$. If no usable privileged context is available, the sample is excluded from the default FlowSD target when $\beta_T>0$.
@@ -121,7 +119,7 @@ Teacher preference alone is not treated as evidence of correctness. FlowSD rever
 ```math
 G(y;x,c)
 =
-G_{\mathrm{raw}}(y;x,c)\,\operatorname{sign}(A(y)).
+G_{\mathrm{raw}}(y;x,c)\,\mathrm{sign}(A(y)).
 ```
 
 Thus, positive verifier advantage preserves the teacher direction, negative advantage reverses it, and zero advantage disables the privileged term.
