@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "prompt_suffix": "\nPlease reason step by step, and put your final answer within \\boxed{}.",
+  "datasets": {
+    "aime24": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/aime24.parquet",
+      "sha256": "4f6ec40782731166b7909e3c236c2cf324e50f643bf2aca6f8daa6fe41d58993",
+      "source_stats": {
+        "raw_rows": 960,
+        "dedup_key": "extra_info.index"
+      },
+      "checks": {
+        "rows": 30,
+        "unique_ids": 30,
+        "unique_normalized_prompts": 30,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "aime25": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/aime25.parquet",
+      "sha256": "b3bc1a0ad7b95912b4d8eb8d72c4a70fe72c1c2d01fcce250de579915c5b4e18",
+      "source_stats": {
+        "raw_rows": 30,
+        "source_configs": [
+          "AIME2025-I",
+          "AIME2025-II"
+        ]
+      },
+      "checks": {
+        "rows": 30,
+        "unique_ids": 30,
+        "unique_normalized_prompts": 30,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "aime26": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/aime26.parquet",
+      "sha256": "9b18df6d286a8cf97d3f1a9c3cfbc552f4b124d6d6c92e48732cbfd46329407e",
+      "source_stats": {
+        "raw_rows": 30,
+        "division_mapping": "problem_idx 1-15 => I; 16-30 => II"
+      },
+      "checks": {
+        "rows": 30,
+        "unique_ids": 30,
+        "unique_normalized_prompts": 30,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "hmmt25": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/hmmt25.parquet",
+      "sha256": "48d493ea2bad854c0381d5a1f9fba2342fbc3b489d7e31a89e74334e4d6d12f9",
+      "source_stats": {
+        "raw_rows": 30,
+        "cross_checked_against": "PraMamba/HMMT-202502 (30/30 normalized prompts overlap)"
+      },
+      "checks": {
+        "rows": 30,
+        "unique_ids": 30,
+        "unique_normalized_prompts": 30,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "minerva_math": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/minerva_math.parquet",
+      "sha256": "692b7365dd2b700f5970865552462055727e1a657e4af12b055be51dbe06a84a",
+      "source_stats": {
+        "raw_rows": 272,
+        "cross_checked_against": "svc-huggingface/minerva-math (272/272 normalized prompts overlap)"
+      },
+      "checks": {
+        "rows": 272,
+        "unique_ids": 272,
+        "unique_normalized_prompts": 272,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "math500": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/math500.parquet",
+      "sha256": "a857c1b156aef53b162e5f27bc27792998e715b4e93fd7c04fbd5c9164c73ec9",
+      "source_stats": {
+        "raw_rows": 500
+      },
+      "checks": {
+        "rows": 500,
+        "unique_ids": 500,
+        "unique_normalized_prompts": 500,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    },
+    "olympiadbench": {
+      "path": "/apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/data/processed/olympiadbench.parquet",
+      "sha256": "72f6f1e5ffd53f99321c8b19e447f91883bf5d4eb957d0e16710166b44d57fca",
+      "source_stats": {
+        "raw_rows": 674,
+        "text_only_rows": 674,
+        "multiple_answer_rows": 93,
+        "tolerance_rows": 1,
+        "answer_type_counts": {
+          "Numerical": 572,
+          "Expression": 63,
+          "Tuple": 33,
+          "Interval": 6
+        }
+      },
+      "checks": {
+        "rows": 674,
+        "unique_ids": 674,
+        "unique_normalized_prompts": 674,
+        "duplicate_normalized_prompts": 0,
+        "empty_answers": 0
+      }
+    }
+  },
+  "cross_dataset_exact_prompt_overlaps": []
+}

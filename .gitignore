@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Environments and local secrets
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.secrets/
+
+# Runtime outputs
+/output/
+/outputs/
+/checkpoints/
+/wandb/
+/logs/
+*.log
+ray_results/
+
+# Evaluation products
+evaluation/**/results/
+evaluation/**/results_*/
+evaluation/**/merged_/models/
+
+# Models and large local data
+/models/
+data/local/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Generated runtime environments with injected credentials
+**/.runtime_env.local.yaml
+
+# Analysis outputs and judge logs
+/outputs/
+analysis/**/outputs/
+analysis/**/raw_records/
+analysis/**/judge_logs/
+analysis/**/failures.jsonl
+
+# Credentials and local platform manifests
+*.env.local
+.secrets/
+resources_access/

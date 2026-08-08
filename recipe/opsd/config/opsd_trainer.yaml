@@ -1,0 +1,146 @@
+# OPSD on the common FlowSD Ray/FSDP/vLLM stack.
+# Infrastructure defaults match FlowSD/RLSD/GRPO; only objective-specific knobs differ.
+
+hydra:
+  searchpath:
+    - file://verl/verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+data:
+  train_batch_size: 256
+  gen_batch_size: ${data.train_batch_size}
+  max_prompt_length: 2048
+  max_response_length: 8192
+  filter_overlong_prompts: True
+  shuffle: True
+  trust_remote_code: True
+  apply_chat_template_kwargs: { "enable_thinking": true }
+
+actor_rollout_ref:
+  nccl_timeout: 600
+  actor:
+    _target_: recipe.opsd.opsd_config.OPSDFSDPActorConfig
+    ppo_mini_batch_size: 128
+    ppo_micro_batch_size_per_gpu: 1
+    ppo_max_token_len_per_gpu: 10240
+    ppo_epochs: 1
+    clip_ratio_low: 0.2
+    clip_ratio_high: 0.28
+    use_kl_loss: False
+    use_dynamic_bsz: True
+    ulysses_sequence_parallel_size: 8
+    grad_clip: 1.0
+    entropy_coeff: 0.0
+    policy_loss:
+      loss_mode: opsd
+    self_distillation:
+      _target_: recipe.opsd.opsd_config.OPSDSelfDistillationConfig
+      full_logit_distillation: True
+      alpha: 0.0
+      success_reward_threshold: 0.5
+      teacher_regularization: ema
+      teacher_update_rate: 0.0
+      distillation_topk: 100
+      distillation_add_tail: True
+      token_loss_clip: 0.06
+      max_reprompt_len: 10240
+      reprompt_truncation: right
+      dont_reprompt_on_self_success: False
+      remove_thinking_from_demonstration: False
+      is_clip: null
+      include_environment_feedback: False
+      environment_feedback_only_without_solution: False
+      solution_source: external_first
+      teacher_enable_thinking: true
+      reprompt_template: |-
+        {prompt}{solution}{feedback}
+
+        Correctly solve the original question.
+      solution_template: |-
+
+        Correct solution:
+
+        {successful_previous_attempt}
+
+      feedback_template: |-
+
+        The following is feedback from your unsuccessful earlier attempt:
+
+        {feedback_raw}
+    optim:
+      lr: 1e-6
+      lr_warmup_steps: 10
+    fsdp_config:
+      param_offload: True
+      optimizer_offload: True
+      fsdp_size: -1
+  ref:
+    log_prob_micro_batch_size_per_gpu: 1
+    log_prob_use_dynamic_bsz: True
+    log_prob_max_token_len_per_gpu: 10240
+    ulysses_sequence_parallel_size: 8
+    fsdp_config:
+      param_offload: True
+  model:
+    trust_remote_code: True
+    use_remove_padding: True
+    enable_gradient_checkpointing: True
+  rollout:
+    name: vllm
+    n: 8
+    calculate_log_probs: True
+    log_prob_use_dynamic_bsz: True
+    log_prob_max_token_len_per_gpu: 10240
+    gpu_memory_utilization: 0.55
+    tensor_model_parallel_size: 1
+    enable_chunked_prefill: True
+    max_num_batched_tokens: 10240
+    max_model_len: 10240
+    temperature: 1.0
+    top_p: 1.0
+    top_k: -1
+    val_kwargs:
+      temperature: 0.6
+      top_p: 0.95
+      do_sample: True
+      n: 1
+
+algorithm:
+  adv_estimator: grpo
+  norm_adv_by_std_in_grpo: True
+  use_kl_in_reward: False
+  rollout_correction:
+    rollout_is: null
+    rollout_is_threshold: 2.0
+
+custom_reward_function:
+  path: core/utils/reward_score/sdpo_math_feedback_score.py
+  name: compute_score
+reward_model:
+  reward_manager: dapo
+  use_reward_loop: False
+  reward_kwargs:
+    max_resp_len: 8192
+    overlong_buffer_cfg:
+      enable: False
+      len: 0
+      penalty_factor: 0.0
+      log: False
+  api_endpoints:
+    - name: empty
+      endpoint: xxxx
+trainer:
+  project_name: verl-opsd
+  n_gpus_per_node: 8
+  nnodes: 4
+  save_freq: 10
+  test_freq: 1
+  log_val_generations: 4
+  max_actor_ckpt_to_keep: null
+  total_epochs: 500
+  total_training_steps: null
+  val_before_train: False
+  logger: [console, wandb]

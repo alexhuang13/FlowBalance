@@ -1,0 +1,6 @@
+{
+  "aime24": {"repo": "BytedTsinghua-SIA/AIME-2024", "revision": "aa49075e24ad594b79fdf0bdcefa735c2181be67", "rows_raw": 960, "rows_unique_expected": 30},
+  "aime25_opencompass": {"repo": "opencompass/AIME2025", "revision": "a6ad95f611d72cf628a80b58bd0432ef6638f958", "rows": 30},
+  "aime25_matharena": {"repo": "MathArena/aime_2025", "revision": "c94da77eb22bbd6439e62a323bec18493a421302", "rows": 30},
+  "aime26_matharena": {"repo": "MathArena/aime_2026", "revision": "d2de22f3c656b4f56cf8981212186377d1e23bc3", "rows": 30}
+}

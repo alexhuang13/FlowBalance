@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="685" height="468" viewBox="0 0 685 468">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:"Times New Roman",Times,serif;fill:#111}.tick{font-size:18px}.label{font-size:26px}.value{font-size:21px}.ylabel{font-size:25px}</style>
+<line x1="92" y1="390.0" x2="85" y2="390.0" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="390.0" x2="643" y2="390.0" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="396.0" text-anchor="end" class="tick">0.00</text>
+<line x1="92" y1="321.2" x2="637" y2="321.2" stroke="#D1D5DB" stroke-width="0.8" opacity="0.65"/>
+<line x1="92" y1="321.2" x2="85" y2="321.2" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="321.2" x2="643" y2="321.2" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="327.2" text-anchor="end" class="tick">0.05</text>
+<line x1="92" y1="252.4" x2="637" y2="252.4" stroke="#D1D5DB" stroke-width="0.8" opacity="0.65"/>
+<line x1="92" y1="252.4" x2="85" y2="252.4" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="252.4" x2="643" y2="252.4" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="258.4" text-anchor="end" class="tick">0.10</text>
+<line x1="92" y1="183.6" x2="637" y2="183.6" stroke="#D1D5DB" stroke-width="0.8" opacity="0.65"/>
+<line x1="92" y1="183.6" x2="85" y2="183.6" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="183.6" x2="643" y2="183.6" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="189.6" text-anchor="end" class="tick">0.15</text>
+<line x1="92" y1="114.8" x2="637" y2="114.8" stroke="#D1D5DB" stroke-width="0.8" opacity="0.65"/>
+<line x1="92" y1="114.8" x2="85" y2="114.8" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="114.8" x2="643" y2="114.8" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="120.8" text-anchor="end" class="tick">0.20</text>
+<line x1="92" y1="46.0" x2="85" y2="46.0" stroke="#111" stroke-width="1.2"/>
+<line x1="637" y1="46.0" x2="643" y2="46.0" stroke="#111" stroke-width="1.2"/>
+<text x="79" y="52.0" text-anchor="end" class="tick">0.25</text>
+<rect x="92" y="46" width="545" height="344" fill="none" stroke="#111" stroke-width="1.8"/>
+<text transform="translate(32,218.0) rotate(-90)" text-anchor="middle" class="ylabel">Simpson Diversity</text>
+<line x1="92.0" y1="46" x2="92.0" y2="53" stroke="#111" stroke-width="1"/>
+<line x1="92.0" y1="390" x2="92.0" y2="383" stroke="#111" stroke-width="1"/>
+<line x1="137.4" y1="46" x2="137.4" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="137.4" y1="390" x2="137.4" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="182.8" y1="46" x2="182.8" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="182.8" y1="390" x2="182.8" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="228.2" y1="46" x2="228.2" y2="53" stroke="#111" stroke-width="1"/>
+<line x1="228.2" y1="390" x2="228.2" y2="383" stroke="#111" stroke-width="1"/>
+<line x1="273.7" y1="46" x2="273.7" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="273.7" y1="390" x2="273.7" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="319.1" y1="46" x2="319.1" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="319.1" y1="390" x2="319.1" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="364.5" y1="46" x2="364.5" y2="53" stroke="#111" stroke-width="1"/>
+<line x1="364.5" y1="390" x2="364.5" y2="383" stroke="#111" stroke-width="1"/>
+<line x1="409.9" y1="46" x2="409.9" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="409.9" y1="390" x2="409.9" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="455.3" y1="46" x2="455.3" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="455.3" y1="390" x2="455.3" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="500.8" y1="46" x2="500.8" y2="53" stroke="#111" stroke-width="1"/>
+<line x1="500.8" y1="390" x2="500.8" y2="383" stroke="#111" stroke-width="1"/>
+<line x1="546.2" y1="46" x2="546.2" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="546.2" y1="390" x2="546.2" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="591.6" y1="46" x2="591.6" y2="50" stroke="#111" stroke-width="1"/>
+<line x1="591.6" y1="390" x2="591.6" y2="386" stroke="#111" stroke-width="1"/>
+<line x1="637.0" y1="46" x2="637.0" y2="53" stroke="#111" stroke-width="1"/>
+<line x1="637.0" y1="390" x2="637.0" y2="383" stroke="#111" stroke-width="1"/>
+<rect x="135.3" y="250.1" width="95" height="139.9" fill="#F1F1F1" fill-opacity="0.94" stroke="#111111" stroke-width="1.8"/>
+<text x="182.83333333333331" y="241.1" text-anchor="middle" class="value">0.1017</text>
+<text x="182.83333333333331" y="428" text-anchor="middle" class="label" fill="#111111">GRPO</text>
+<rect x="317.0" y="189.6" width="95" height="200.4" fill="#B8B8B8" fill-opacity="0.94" stroke="#111111" stroke-width="1.8"/>
+<text x="364.5" y="180.6" text-anchor="middle" class="value">0.1456</text>
+<text x="364.5" y="428" text-anchor="middle" class="label" fill="#111111">RLSD</text>
+<rect x="498.7" y="88.2" width="95" height="301.8" fill="#E2ECFA" fill-opacity="0.94" stroke="#6A9DF8" stroke-width="1.8"/>
+<text x="546.1666666666667" y="79.2" text-anchor="middle" class="value">0.2194</text>
+<text x="546.1666666666667" y="428" text-anchor="middle" class="label" fill="#6A9DF8">FlowSD</text>
+</svg>

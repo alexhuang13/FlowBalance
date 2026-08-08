@@ -1,0 +1,49 @@
+{
+  "Token": "vgfKiIjHYtCZNxwSfCZBvA",
+  "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "model_local_file_path": "/apdcephfs_gy4/share_303378103/user/audenhuang/resources_access",
+  "host_num": 1,
+  "host_gpu_num": 8,
+  "project_name": "lifelong learning",
+  "common": {
+    "belong_project_name": "lifelong learning",
+    "project_name": "lifelong learning",
+    "description_info": "Evaluate final GRPO/RLSD/FlowSD Qwen3-8B checkpoints on 7 math benchmarks, pass@1/pass@16"
+  },
+  "image_full_name": "mirrors.tencent.com/stable-rl/verl0.7.0:v1",
+  "init_cmd": "bash /apdcephfs_gy4/share_303378103/user/audenhuang/stable_rl/scripts/init.sh",
+  "GPUName": "H20",
+  "enable_rdma": false,
+  "cuda_version": "12.0",
+  "keep_alive": true,
+  "is_elasticity": false,
+  "enable_vscode": true,
+  "start_cmd": "bash -lc 'bash /apdcephfs_gy4/share_303378103/user/audenhuang/math_benchmark_eval/scripts/run_eval_job.sh'",
+  "exec_start_in_all_mpi_pods": false,
+  "belong_project_name": "Lifelong learning \u7b97\u6cd5\u63a2\u7d22\u5b9e\u9a8c-RL\uff0c\u6587\u751f\u6587-\u5f3a\u5316\u5b66\u4e60:\u4ee3\u7801/\u6570\u5b66/\u6307\u4ee4\u9075\u5faa\u7b49\u5f3a\u5316\u5b9e\u9a8c",
+  "description_info": "Evaluate final GRPO/RLSD/FlowSD Qwen3-8B checkpoints on 7 math benchmarks, pass@1/pass@16",
+  "envs": {
+    "HUNYUAN_TASK_CATEGORY": "LLM",
+    "HUNYUAN_TASK_DESCRIPTION": "LLM Agent Training",
+    "HUNYUAN_RESOURCE_USAGE": "experiment",
+    "HUNYUAN_TASK_MODEL_TYPE": "SFT",
+    "HUNYUAN_TASK_START_MODEL_TYPE": "8B\u70ed\u542f",
+    "HUNYUAN_TASK_DOMAIN": "NLP",
+    "HUNYUAN_BASE_MODEL": "8B",
+    "HUNYUAN_OUTPUT_BASE_MODEL": "8B"
+  },
+  "mount_ceph_business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+  "dataset_params": {
+    "dataset_source": "plat_business_ceph",
+    "dataset_name": "CQ",
+    "path_info": {
+      "plat_business_cephs": [
+        {
+          "business_flag": "TaiJi_HYAide_SI_GY_H20_N_GY_H20",
+          "dst_path": "gy"
+        }
+      ]
+    }
+  },
+  "task_flag": "auden_math_benchmark_eval_final_ckpts"
+}

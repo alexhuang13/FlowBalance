@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+GCC_LIBDIR=${EVAL_GCC_LIBDIR:-}
+if [ -z "$GCC_LIBDIR" ]; then
+  GCC_LIB=$(find /usr/local/gcc -type f -name libgcc.a 2>/dev/null | head -1)
+  [ -n "$GCC_LIB" ] || { echo 'cannot locate /usr/local/gcc libgcc.a' >&2; exit 1; }
+  GCC_LIBDIR=$(dirname "$GCC_LIB")
+fi
+exec /usr/local/gcc/bin/gcc -B"${GCC_LIBDIR}/" -L"${GCC_LIBDIR}" -L/usr/lib64 "$@"

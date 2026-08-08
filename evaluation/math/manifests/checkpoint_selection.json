@@ -1,0 +1,18 @@
+{
+  "selected_at": "2026-07-28T10:39:00+08:00",
+  "grpo": {
+    "run": "output/verl-grpo/GRPO-Qwen3-8B-math-dapo17k-wandb-run34",
+    "step": 490,
+    "status": "training stopped by user request; 32/32 model shards and data.pt verified"
+  },
+  "rlsd": {
+    "run": "output/verl-rlsd-native/RLSD-Native-Qwen3-8B-math-dapo17k-run34",
+    "step": 190,
+    "status": "pinned checkpoint; training continues"
+  },
+  "flowsd": {
+    "run": "output/verl-flowsd/FlowSD-Qwen3-8B-math-dapo17k-betaq1-grpo-signadv-frozenref-etaR15-lr1e6-run28",
+    "step": 410,
+    "status": "completed run final checkpoint"
+  }
+}

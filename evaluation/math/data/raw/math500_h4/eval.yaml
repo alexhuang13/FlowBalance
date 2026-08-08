@@ -1,0 +1,34 @@
+# yaml file for compatibility with inspect-ai
+
+name: MATH 500
+description: >
+  This dataset contains a subset of 500 problems from the MATH benchmark that
+  OpenAI created in their Let's Verify Step by Step paper.
+
+tasks:
+  - id: math_500
+    config: default
+    split: test
+
+    epochs: 4
+    epoch_reducer: pass_at_1
+
+    field_spec:
+      input: problem
+      target: answer
+
+    solvers:
+      - name: prompt_template
+        args:
+          template: >
+            Solve the following math problem efficiently and clearly.  The last line
+            of your response should be of the following format: 'Therefore, the final
+            answer is: $\\boxed{ANSWER}$. I hope it is correct' (without quotes)
+            where ANSWER is just the final number or expression that solves the
+            problem. Think step by step before answering.
+
+            {prompt}
+      - name: generate
+          
+    scorers:
+      - name: model_graded_fact

@@ -1,0 +1,37 @@
+# Unified Ray runtime environment for every FlowSD training recipe.
+# Run ray job submission from the FlowSD repository root.
+working_dir: .
+
+excludes:
+  - .git
+  - provenance
+  - evaluation/math/data/raw
+  - "**/__pycache__"
+  - "**/.pytest_cache"
+  - "**/.runtime_env.local.yaml"
+
+env_vars:
+  PYTHONPATH: "verl:."
+  TOKENIZERS_PARALLELISM: "true"
+  TORCH_NCCL_AVOID_RECORD_STREAMS: "1"
+  VLLM_USE_V1: "1"
+  VLLM_LOGGING_LEVEL: "WARN"
+  VLLM_ALLOW_RUNTIME_LORA_UPDATING: "true"
+  VLLM_ALLREDUCE_USE_SYMM_MEM: "0"
+  CUDA_DEVICE_MAX_CONNECTIONS: "1"
+  NCCL_ALGO: "Ring"
+  NCCL_DEBUG: "WARN"
+  NCCL_IB_DISABLE: "1"
+  NCCL_CUMEM_ENABLE: "0"
+  WANDB_API_KEY: "your key"
+  SDPO_TOOLCHAIN_DIR: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain
+  PATH: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  CC: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/gcc
+  CXX: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/g++
+  TRITON_CC: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/gcc
+  CUDAHOSTCXX: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/g++
+  LIBRARY_PATH: /usr/lib64:/usr/lib/gcc/x86_64-TencentOS-linux/12
+  LD_LIBRARY_PATH: /usr/lib64:/usr/lib/gcc/x86_64-TencentOS-linux/12
+  COMPILER_PATH: /usr/libexec/gcc/x86_64-TencentOS-linux/12
+  LDFLAGS: "-L/usr/lib/gcc/x86_64-TencentOS-linux/12 -L/usr/lib64"
+  TORCH_CUDA_ARCH_LIST: "9.0"

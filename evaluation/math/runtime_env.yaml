@@ -1,0 +1,25 @@
+working_dir: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD
+excludes:
+  - .git
+env_vars:
+  TOKENIZERS_PARALLELISM: "false"
+  VLLM_USE_V1: "1"
+  # Avoid FlashInfer sampling JIT; use the stable Python sampler.
+  VLLM_USE_FLASHINFER_SAMPLER: "0"
+  # TP=1 means no tensor-parallel collectives; keep inherited Tree disabled.
+  NCCL_ALGO: "Ring"
+  NCCL_IB_DISABLE: "1"
+  NCCL_DEBUG: "WARN"
+  TORCH_NCCL_AVOID_RECORD_STREAMS: "1"
+  PYTHONPATH: "verl:."
+  SDPO_TOOLCHAIN_DIR: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain
+  PATH: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  CC: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/gcc
+  CXX: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/g++
+  TRITON_CC: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/gcc
+  CUDAHOSTCXX: /apdcephfs_gy4/share_303378103/user/audenhuang/FlowSD/recipe/sdpo/toolchain/g++
+  LIBRARY_PATH: /usr/lib64:/usr/lib/gcc/x86_64-TencentOS-linux/12
+  LD_LIBRARY_PATH: /usr/lib64:/usr/lib/gcc/x86_64-TencentOS-linux/12
+  COMPILER_PATH: /usr/libexec/gcc/x86_64-TencentOS-linux/12
+  LDFLAGS: "-L/usr/lib/gcc/x86_64-TencentOS-linux/12 -L/usr/lib64"
+  TORCH_CUDA_ARCH_LIST: "9.0"

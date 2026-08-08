@@ -1,0 +1,7 @@
+mode,comparison,n_pairs,mean_simpson_difference,median_difference,wins,ties,losses
+all,flowsd-grpo,30,0.019010416666666665,0.0,14,8,8
+all,flowsd-rlsd,30,0.09010416666666667,0.0,14,9,7
+all,rlsd-grpo,30,-0.07109375,0.0,6,11,13
+correct_only,flowsd-grpo,25,0.1064659906111205,0.0,10,13,2
+correct_only,flowsd-rlsd,24,0.07118089199669511,0.0,9,12,3
+correct_only,rlsd-grpo,24,0.039721181556555414,0.0,6,14,4
