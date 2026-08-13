@@ -2,6 +2,8 @@
 
 # FlowSD: Trajectory-Balanced On-Policy Self-Distillation
 
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)]() [![GitHub](https://img.shields.io/badge/FlowSD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowSD) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowSD-Blog/)
+
 **Learn a distribution over correct reasoning trajectories—not just one correct answer.**
 
 [Results](#main-results) · [Diversity](#more-than-accuracy-strategy-diversity) · [Quick Start](#quick-start) · [Evaluation](#evaluation) · [Citation](#citation)
