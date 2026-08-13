@@ -102,7 +102,7 @@ All main-table entries are step-180 results reported as mean ± sample standard 
       <td align="center">GRPO</td>
       <td align="center">78.00 ± 1.83</td>
       <td align="center">26.67 ± 2.36</td>
-      <td align="center"><strong>51.18 ± 1.36</strong></td>
+      <td align="center">51.18 ± 1.36</td>
       <td align="center">92.04 ± 0.98</td>
       <td align="center">63.68 ± 0.58</td>
       <td align="center">62.31</td>
@@ -117,6 +117,15 @@ All main-table entries are step-180 results reported as mean ± sample standard 
       <td align="center">59.55</td>
     </tr>
     <tr>
+      <td align="center">FlowRL</td>
+      <td align="center">75.33 ± 1.83</td>
+      <td align="center">30.67 ± 4.94</td>
+      <td align="center"><strong>51.99 ± 1.51</strong></td>
+      <td align="center">92.84 ± 0.62</td>
+      <td align="center">65.25 ± 0.49</td>
+      <td align="center">63.22</td>
+    </tr>
+    <tr>
       <td align="center"><strong>FlowSD</strong></td>
       <td align="center"><strong>80.00 ± 0.00</strong></td>
       <td align="center"><strong>32.00 ± 2.98</strong></td>
@@ -129,7 +138,7 @@ All main-table entries are step-180 results reported as mean ± sample standard 
 </table>
 </div>
 
-**Takeaway:** FlowSD improves the five-benchmark average by **+1.95 points over GRPO** and **+4.71 over RLSD**, while leading four of the five reported benchmarks.
+**Takeaway:** FlowSD improves the five-benchmark average by **+1.95 points over GRPO**, **+4.71 over RLSD**, and **+1.04 over FlowRL**, while leading four of the five reported benchmarks; FlowRL leads Minerva.
 
 ### Qwen3-8B
 
@@ -166,6 +175,15 @@ All main-table entries are step-180 results reported as mean ± sample standard 
       <td align="center">64.12</td>
     </tr>
     <tr>
+      <td align="center">FlowRL</td>
+      <td align="center">86.67 ± 0.00</td>
+      <td align="center">30.67 ± 4.35</td>
+      <td align="center">52.79 ± 1.37</td>
+      <td align="center">92.92 ± 0.50</td>
+      <td align="center">66.20 ± 1.05</td>
+      <td align="center">65.85</td>
+    </tr>
+    <tr>
       <td align="center"><strong>FlowSD</strong></td>
       <td align="center"><strong>89.33 ± 1.49</strong></td>
       <td align="center"><strong>34.67 ± 9.89</strong></td>
@@ -178,7 +196,7 @@ All main-table entries are step-180 results reported as mean ± sample standard 
 </table>
 </div>
 
-**Takeaway:** FlowSD obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 points over GRPO** and **+3.49 over RLSD**.
+**Takeaway:** FlowSD obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 points over GRPO**, **+3.49 over RLSD**, and **+1.76 over FlowRL**.
 
 ### Where the gains are strongest
 
@@ -196,32 +214,32 @@ All main-table entries are step-180 results reported as mean ± sample standard 
     <tr>
       <td align="center">Qwen3-4B average</td>
       <td align="center"><strong>64.26</strong></td>
-      <td align="center">62.31 GRPO</td>
-      <td align="center"><strong>+1.95</strong></td>
+      <td align="center">63.22 FlowRL</td>
+      <td align="center"><strong>+1.04</strong></td>
     </tr>
     <tr>
       <td align="center">Qwen3-8B average</td>
       <td align="center"><strong>67.61</strong></td>
-      <td align="center">65.49 GRPO</td>
-      <td align="center"><strong>+2.12</strong></td>
+      <td align="center">65.85 FlowRL</td>
+      <td align="center"><strong>+1.76</strong></td>
     </tr>
     <tr>
       <td align="center">Qwen3-8B AIME24@16</td>
       <td align="center"><strong>89.33</strong></td>
-      <td align="center">85.33 GRPO</td>
-      <td align="center"><strong>+4.00</strong></td>
+      <td align="center">86.67 FlowRL</td>
+      <td align="center"><strong>+2.66</strong></td>
     </tr>
     <tr>
       <td align="center">Qwen3-8B OlympiadBench</td>
       <td align="center"><strong>66.85</strong></td>
-      <td align="center">64.78 GRPO</td>
-      <td align="center"><strong>+2.07</strong></td>
+      <td align="center">66.20 FlowRL</td>
+      <td align="center"><strong>+0.65</strong></td>
     </tr>
     <tr>
       <td align="center">Qwen3-4B HMMT25</td>
       <td align="center"><strong>32.00</strong></td>
-      <td align="center">26.67 GRPO</td>
-      <td align="center"><strong>+5.33</strong></td>
+      <td align="center">30.67 FlowRL</td>
+      <td align="center"><strong>+1.33</strong></td>
     </tr>
   </tbody>
 </table>
