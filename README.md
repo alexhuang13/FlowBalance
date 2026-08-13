@@ -6,7 +6,7 @@
 
 **Learn a distribution over correct reasoning trajectories—not just one correct answer.**
 
-[Results](#main-results) · [Diversity](#more-than-accuracy-strategy-diversity) · [Quick Start](#quick-start) · [Evaluation](#evaluation) · [Citation](#citation)
+[📊 Results](#main-results) · [🌈 Diversity](#more-than-accuracy-strategy-diversity) · [🚀 Quick Start](#quick-start) · [🧪 Evaluation](#evaluation) · [📝 Citation](#citation)
 
 </div>
 
