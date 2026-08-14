@@ -4,7 +4,7 @@
 
 [![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](#citation) [![GitHub](https://img.shields.io/badge/FlowBalance-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowBalance) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowBalance-Blog/)
 
-**Learn a normalized distribution over complete reasoning trajectories by combining verified outcomes with dense, outcome-calibrated self-teacher feedback.**
+**Learn a distribution over correct reasoning trajectories—not just one correct answer.**
 
 [💡 Method](#method) · [📊 Results](#main-results) · [📈 Dynamics](#training-dynamics) · [🌈 Diversity](#strategy-diversity) · [🚀 Quick Start](#quick-start) · [📝 Citation](#citation)
 
