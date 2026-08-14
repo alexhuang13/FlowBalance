@@ -89,13 +89,13 @@ E_{\mathrm{FlowBalance},\mathcal G}(y\mid x,c).
 
 One log-partition estimate is profiled from each rollout group, and gradients are stopped through the target-side quantities. Each component therefore has a distinct role:
 
-| Component | Role |
+| <sub>Component</sub> | <sub>Role</sub> |
 |---|---|
-| **Verifier advantage** | Determines outcome-aligned direction |
-| **Privileged self-teacher** | Supplies dense evidence along sampled trajectories |
-| **Sign gate** | Prevents teacher confidence from overriding verified outcomes |
-| **Reference policy** | Controls support and policy drift |
-| **Trajectory balance** | Converts the composite energy into normalized relative probabilities over complete responses |
+| <sub><strong>Verifier advantage</strong></sub> | <sub>Determines outcome-aligned direction</sub> |
+| <sub><strong>Privileged self-teacher</strong></sub> | <sub>Supplies dense evidence along sampled trajectories</sub> |
+| <sub><strong>Sign gate</strong></sub> | <sub>Prevents teacher confidence from overriding verified outcomes</sub> |
+| <sub><strong>Reference policy</strong></sub> | <sub>Controls support and policy drift</sub> |
+| <sub><strong>Trajectory balance</strong></sub> | <sub>Converts the composite energy into normalized relative probabilities over complete responses</sub> |
 
 Dense supervision is therefore realized as **distributional trajectory shaping**, not as a separate token-imitation loss.
 
@@ -107,25 +107,25 @@ All entries are step-180 results reported as mean ± sample standard deviation o
 
 ### Qwen3-4B
 
-| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
+| <sub>Method</sub> | <sub>AIME24@16</sub> | <sub>HMMT25</sub> | <sub>Minerva</sub> | <sub>MATH500</sub> | <sub>OlympiadBench</sub> | <sub><strong>Avg.</strong></sub> |
 |---|---:|---:|---:|---:|---:|---:|
-| GRPO | 78.00 ± 1.83 | 26.67 ± 2.36 | 51.18 ± 1.36 | 92.04 ± 0.98 | 63.68 ± 0.58 | 62.31 |
-| OPSD | 65.33 ± 3.80 | 14.67 ± 2.98 | 47.28 ± 0.56 | 87.56 ± 1.34 | 55.76 ± 1.47 | 54.12 |
-| RLSD | 73.33 ± 2.36 | 21.33 ± 3.80 | 50.29 ± 0.88 | 91.44 ± 0.52 | 61.36 ± 0.66 | 59.55 |
-| FlowRL | 75.33 ± 1.83 | 30.67 ± 4.94 | **51.99 ± 1.51** | 92.84 ± 0.62 | 65.25 ± 0.49 | 63.22 |
-| **FlowBalance** | **80.00 ± 0.00** | **32.00 ± 2.98** | 50.51 ± 0.56 | **93.28 ± 0.59** | **65.49 ± 0.92** | **64.26** |
+| <sub>GRPO</sub> | <sub>78.00 ± 1.83</sub> | <sub>26.67 ± 2.36</sub> | <sub>51.18 ± 1.36</sub> | <sub>92.04 ± 0.98</sub> | <sub>63.68 ± 0.58</sub> | <sub>62.31</sub> |
+| <sub>OPSD</sub> | <sub>65.33 ± 3.80</sub> | <sub>14.67 ± 2.98</sub> | <sub>47.28 ± 0.56</sub> | <sub>87.56 ± 1.34</sub> | <sub>55.76 ± 1.47</sub> | <sub>54.12</sub> |
+| <sub>RLSD</sub> | <sub>73.33 ± 2.36</sub> | <sub>21.33 ± 3.80</sub> | <sub>50.29 ± 0.88</sub> | <sub>91.44 ± 0.52</sub> | <sub>61.36 ± 0.66</sub> | <sub>59.55</sub> |
+| <sub>FlowRL</sub> | <sub>75.33 ± 1.83</sub> | <sub>30.67 ± 4.94</sub> | <sub><strong>51.99 ± 1.51</strong></sub> | <sub>92.84 ± 0.62</sub> | <sub>65.25 ± 0.49</sub> | <sub>63.22</sub> |
+| <sub><strong>FlowBalance</strong></sub> | <sub><strong>80.00 ± 0.00</strong></sub> | <sub><strong>32.00 ± 2.98</strong></sub> | <sub>50.51 ± 0.56</sub> | <sub><strong>93.28 ± 0.59</strong></sub> | <sub><strong>65.49 ± 0.92</strong></sub> | <sub><strong>64.26</strong></sub> |
 
 FlowBalance improves the aggregate by **+1.95 over GRPO**, **+10.14 over OPSD**, **+4.71 over RLSD**, and **+1.04 over FlowRL**. It leads four of the five benchmarks; FlowRL leads Minerva.
 
 ### Qwen3-8B
 
-| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
+| <sub>Method</sub> | <sub>AIME24@16</sub> | <sub>HMMT25</sub> | <sub>Minerva</sub> | <sub>MATH500</sub> | <sub>OlympiadBench</sub> | <sub><strong>Avg.</strong></sub> |
 |---|---:|---:|---:|---:|---:|---:|
-| GRPO | 85.33 ± 1.83 | 31.33 ± 7.67 | 52.87 ± 1.02 | 93.16 ± 0.83 | 64.78 ± 0.62 | 65.49 |
-| OPSD | 48.67 ± 3.80 | 4.00 ± 3.65 | 38.46 ± 3.85 | 74.56 ± 4.81 | 40.09 ± 3.57 | 41.16 |
-| RLSD | 82.67 ± 3.65 | 28.00 ± 1.83 | 52.94 ± 1.38 | 93.44 ± 0.17 | 63.56 ± 1.19 | 64.12 |
-| FlowRL | 86.67 ± 0.00 | 30.67 ± 4.35 | 52.79 ± 1.37 | 92.92 ± 0.50 | 66.20 ± 1.05 | 65.85 |
-| **FlowBalance** | **89.33 ± 1.49** | **34.67 ± 9.89** | **53.68 ± 0.78** | **93.52 ± 0.30** | **66.85 ± 0.46** | **67.61** |
+| <sub>GRPO</sub> | <sub>85.33 ± 1.83</sub> | <sub>31.33 ± 7.67</sub> | <sub>52.87 ± 1.02</sub> | <sub>93.16 ± 0.83</sub> | <sub>64.78 ± 0.62</sub> | <sub>65.49</sub> |
+| <sub>OPSD</sub> | <sub>48.67 ± 3.80</sub> | <sub>4.00 ± 3.65</sub> | <sub>38.46 ± 3.85</sub> | <sub>74.56 ± 4.81</sub> | <sub>40.09 ± 3.57</sub> | <sub>41.16</sub> |
+| <sub>RLSD</sub> | <sub>82.67 ± 3.65</sub> | <sub>28.00 ± 1.83</sub> | <sub>52.94 ± 1.38</sub> | <sub>93.44 ± 0.17</sub> | <sub>63.56 ± 1.19</sub> | <sub>64.12</sub> |
+| <sub>FlowRL</sub> | <sub>86.67 ± 0.00</sub> | <sub>30.67 ± 4.35</sub> | <sub>52.79 ± 1.37</sub> | <sub>92.92 ± 0.50</sub> | <sub>66.20 ± 1.05</sub> | <sub>65.85</sub> |
+| <sub><strong>FlowBalance</strong></sub> | <sub><strong>89.33 ± 1.49</strong></sub> | <sub><strong>34.67 ± 9.89</strong></sub> | <sub><strong>53.68 ± 0.78</strong></sub> | <sub><strong>93.52 ± 0.30</strong></sub> | <sub><strong>66.85 ± 0.46</strong></sub> | <sub><strong>67.61</strong></sub> |
 
 FlowBalance obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 over GRPO**, **+26.45 over OPSD**, **+3.49 over RLSD**, and **+1.76 over FlowRL**.
 
@@ -133,13 +133,13 @@ FlowBalance obtains the best mean on **every reported benchmark**, improving the
 
 The paper studies the verifier coefficient $\eta_A$ and privileged-teacher coefficient $\beta_T$ using Qwen3-8B and the same five-benchmark average.
 
-| $\eta_A$ | 5 | 10 | **15** |
+| <sub>$\eta_A$</sub> | <sub>5</sub> | <sub>10</sub> | <sub><strong>15</strong></sub> |
 |---:|---:|---:|---:|
-| Avg. | 65.65 | 65.41 | **67.61** |
+| <sub>Avg.</sub> | <sub>65.65</sub> | <sub>65.41</sub> | <sub><strong>67.61</strong></sub> |
 
-| $\beta_T$ | **1** | 2 | 3 |
+| <sub>$\beta_T$</sub> | <sub><strong>1</strong></sub> | <sub>2</sub> | <sub>3</sub> |
 |---:|---:|---:|---:|
-| Avg. | **67.61** | 66.48 | 65.95 |
+| <sub>Avg.</sub> | <sub><strong>67.61</strong></sub> | <sub>66.48</sub> | <sub>65.95</sub> |
 
 The default setting is $\eta_A=15$ and $\beta_T=1$.
 
@@ -173,11 +173,11 @@ D_{\mathrm{Simpson}}=1-\sum_k p_k^2,
 
 where $p_k$ is the fraction of correct trajectories assigned to strategy cluster $k$. It is the probability that two sampled correct trajectories use different semantic strategies.
 
-| Method | Correct-only Simpson diversity | Relative to GRPO |
+| <sub>Method</sub> | <sub>Correct-only Simpson diversity</sub> | <sub>Relative to GRPO</sub> |
 |---|---:|---:|
-| GRPO | 0.1017 | 1.00× |
-| RLSD | 0.1456 | 1.43× |
-| **FlowBalance** | **0.2194** | **2.16×** |
+| <sub>GRPO</sub> | <sub>0.1017</sub> | <sub>1.00×</sub> |
+| <sub>RLSD</sub> | <sub>0.1456</sub> | <sub>1.43×</sub> |
+| <sub><strong>FlowBalance</strong></sub> | <sub><strong>0.2194</strong></sub> | <sub><strong>2.16×</strong></sub> |
 
 <p align="center">
   <img src="assets/flowbalance_strategy_diversity.png" width="62%" alt="FlowBalance LLM-judged semantic strategy diversity on AIME24">
@@ -192,16 +192,16 @@ Within this controlled AIME24 diagnostic, FlowBalance's successful responses spa
 > [!NOTE]
 > **FlowBalance is the paper and project name.** The current implementation retains the historical internal identifier `flowsd` in package paths, configuration keys, launch scripts, environment variables, and old checkpoint labels. This avoids breaking existing experiments and artifacts; these identifiers refer to the FlowBalance implementation in this repository.
 
-| Interface | Current compatibility identifier |
+| <sub>Interface</sub> | <sub>Current compatibility identifier</sub> |
 |---|---|
-| Python package | `recipe.flowsd` |
-| Main module | `recipe.flowsd.main_flowsd` |
-| Config class | `FlowSDConfig` |
-| Hydra block | `actor_rollout_ref.actor.flowsd` |
-| Loss mode | `flowsd` |
-| Environment variables | `FLOWSD_*` |
-| Metric prefix | `flowsd/` |
-| Launcher | `recipe/flowsd/run_math_flowsd.sh` |
+| <sub>Python package</sub> | <sub><code>recipe.flowsd</code></sub> |
+| <sub>Main module</sub> | <sub><code>recipe.flowsd.main_flowsd</code></sub> |
+| <sub>Config class</sub> | <sub><code>FlowSDConfig</code></sub> |
+| <sub>Hydra block</sub> | <sub><code>actor_rollout_ref.actor.flowsd</code></sub> |
+| <sub>Loss mode</sub> | <sub><code>flowsd</code></sub> |
+| <sub>Environment variables</sub> | <sub><code>FLOWSD_*</code></sub> |
+| <sub>Metric prefix</sub> | <sub><code>flowsd/</code></sub> |
+| <sub>Launcher</sub> | <sub><code>recipe/flowsd/run_math_flowsd.sh</code></sub> |
 
 ### Repository layout
 
