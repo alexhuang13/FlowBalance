@@ -90,7 +90,7 @@ E_{\mathrm{FlowBalance},\mathcal G}(y\mid x,c).
 One log-partition estimate is profiled from each rollout group, and gradients are stopped through the target-side quantities. Each component therefore has a distinct role:
 
 | <sub>Component</sub> | <sub>Role</sub> |
-|:---:|:---:|
+|---|---|
 | <sub><strong>Verifier advantage</strong></sub> | <sub>Determines outcome-aligned direction</sub> |
 | <sub><strong>Privileged self-teacher</strong></sub> | <sub>Supplies dense evidence along sampled trajectories</sub> |
 | <sub><strong>Sign gate</strong></sub> | <sub>Prevents teacher confidence from overriding verified outcomes</sub> |
@@ -108,7 +108,7 @@ All entries are step-180 results reported as mean ± sample standard deviation o
 ### Qwen3-4B
 
 | <sub>Method</sub> | <sub>AIME24@16</sub> | <sub>HMMT25</sub> | <sub>Minerva</sub> | <sub>MATH500</sub> | <sub>OlympiadBench</sub> | <sub><strong>Avg.</strong></sub> |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|---|---:|---:|---:|---:|---:|---:|
 | <sub>GRPO</sub> | <sub>78.00 ± 1.83</sub> | <sub>26.67 ± 2.36</sub> | <sub>51.18 ± 1.36</sub> | <sub>92.04 ± 0.98</sub> | <sub>63.68 ± 0.58</sub> | <sub>62.31</sub> |
 | <sub>OPSD</sub> | <sub>65.33 ± 3.80</sub> | <sub>14.67 ± 2.98</sub> | <sub>47.28 ± 0.56</sub> | <sub>87.56 ± 1.34</sub> | <sub>55.76 ± 1.47</sub> | <sub>54.12</sub> |
 | <sub>RLSD</sub> | <sub>73.33 ± 2.36</sub> | <sub>21.33 ± 3.80</sub> | <sub>50.29 ± 0.88</sub> | <sub>91.44 ± 0.52</sub> | <sub>61.36 ± 0.66</sub> | <sub>59.55</sub> |
@@ -120,7 +120,7 @@ FlowBalance improves the aggregate by **+1.95 over GRPO**, **+10.14 over OPSD**,
 ### Qwen3-8B
 
 | <sub>Method</sub> | <sub>AIME24@16</sub> | <sub>HMMT25</sub> | <sub>Minerva</sub> | <sub>MATH500</sub> | <sub>OlympiadBench</sub> | <sub><strong>Avg.</strong></sub> |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|---|---:|---:|---:|---:|---:|---:|
 | <sub>GRPO</sub> | <sub>85.33 ± 1.83</sub> | <sub>31.33 ± 7.67</sub> | <sub>52.87 ± 1.02</sub> | <sub>93.16 ± 0.83</sub> | <sub>64.78 ± 0.62</sub> | <sub>65.49</sub> |
 | <sub>OPSD</sub> | <sub>48.67 ± 3.80</sub> | <sub>4.00 ± 3.65</sub> | <sub>38.46 ± 3.85</sub> | <sub>74.56 ± 4.81</sub> | <sub>40.09 ± 3.57</sub> | <sub>41.16</sub> |
 | <sub>RLSD</sub> | <sub>82.67 ± 3.65</sub> | <sub>28.00 ± 1.83</sub> | <sub>52.94 ± 1.38</sub> | <sub>93.44 ± 0.17</sub> | <sub>63.56 ± 1.19</sub> | <sub>64.12</sub> |
@@ -134,11 +134,11 @@ FlowBalance obtains the best mean on **every reported benchmark**, improving the
 The paper studies the verifier coefficient $\eta_A$ and privileged-teacher coefficient $\beta_T$ using Qwen3-8B and the same five-benchmark average.
 
 | <sub>$\eta_A$</sub> | <sub>5</sub> | <sub>10</sub> | <sub><strong>15</strong></sub> |
-|:---:|:---:|:---:|:---:|
+|---:|---:|---:|---:|
 | <sub>Avg.</sub> | <sub>65.65</sub> | <sub>65.41</sub> | <sub><strong>67.61</strong></sub> |
 
 | <sub>$\beta_T$</sub> | <sub><strong>1</strong></sub> | <sub>2</sub> | <sub>3</sub> |
-|:---:|:---:|:---:|:---:|
+|---:|---:|---:|---:|
 | <sub>Avg.</sub> | <sub><strong>67.61</strong></sub> | <sub>66.48</sub> | <sub>65.95</sub> |
 
 The default setting is $\eta_A=15$ and $\beta_T=1$.
@@ -174,7 +174,7 @@ D_{\mathrm{Simpson}}=1-\sum_k p_k^2,
 where $p_k$ is the fraction of correct trajectories assigned to strategy cluster $k$. It is the probability that two sampled correct trajectories use different semantic strategies.
 
 | <sub>Method</sub> | <sub>Correct-only Simpson diversity</sub> | <sub>Relative to GRPO</sub> |
-|:---:|:---:|:---:|
+|---|---:|---:|
 | <sub>GRPO</sub> | <sub>0.1017</sub> | <sub>1.00×</sub> |
 | <sub>RLSD</sub> | <sub>0.1456</sub> | <sub>1.43×</sub> |
 | <sub><strong>FlowBalance</strong></sub> | <sub><strong>0.2194</strong></sub> | <sub><strong>2.16×</strong></sub> |
@@ -193,7 +193,7 @@ Within this controlled AIME24 diagnostic, FlowBalance's successful responses spa
 > **FlowBalance is the paper and project name.** The current implementation retains the historical internal identifier `flowsd` in package paths, configuration keys, launch scripts, environment variables, and old checkpoint labels. This avoids breaking existing experiments and artifacts; these identifiers refer to the FlowBalance implementation in this repository.
 
 | <sub>Interface</sub> | <sub>Current compatibility identifier</sub> |
-|:---:|:---:|
+|---|---|
 | <sub>Python package</sub> | <sub><code>recipe.flowsd</code></sub> |
 | <sub>Main module</sub> | <sub><code>recipe.flowsd.main_flowsd</code></sub> |
 | <sub>Config class</sub> | <sub><code>FlowSDConfig</code></sub> |
