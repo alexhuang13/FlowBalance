@@ -1,374 +1,222 @@
 <div align="center">
 
-# FlowSD: Trajectory-Balanced On-Policy Self-Distillation
+# FlowBalance: A Dense-Supervision-Motivated Trajectory Balance Method for LLM Reasoning
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)]() [![GitHub](https://img.shields.io/badge/FlowSD-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowSD) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowSD-Blog/)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](#citation) [![GitHub](https://img.shields.io/badge/FlowBalance-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowBalance) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowBalance-Blog/)
 
-**Learn a distribution over correct reasoning trajectories—not just one correct answer.**
+**Learn a normalized distribution over complete reasoning trajectories by combining verified outcomes with dense, outcome-calibrated self-teacher feedback.**
 
-[📊 Results](#main-results) · [🌈 Diversity](#more-than-accuracy-strategy-diversity) · [🚀 Quick Start](#quick-start) · [🧪 Evaluation](#evaluation) · [📝 Citation](#citation)
+[💡 Method](#method) · [📊 Results](#main-results) · [📈 Dynamics](#training-dynamics) · [🌈 Diversity](#strategy-diversity) · [🚀 Quick Start](#quick-start) · [📝 Citation](#citation)
 
 </div>
 
 ---
 
-## The message
+## Overview
 
-> **For long-horizon reasoning, the distribution over correct answers matters as much as correctness itself.**
+Long-horizon reasoning needs two kinds of supervision:
 
-Many reasoning problems admit multiple valid solution strategies. Outcome-only reinforcement learning can discover one successful mode and then concentrate most of the policy mass on it. Local self-distillation provides denser feedback, but token imitation and local policy shaping still do not specify the normalized distribution that the student should represent over complete responses.
+- **Reliable outcome supervision.** Reinforcement learning with verifiable rewards (RLVR) provides trustworthy correctness signals, but only at the end of a long response.
+- **Informative trajectory supervision.** Privileged on-policy self-distillation provides dense token-level guidance, but direct imitation can favor teacher preferences that conflict with the verified outcome, shorten reasoning, or suppress exploration.
 
-**FlowSD fills this gap.** It combines verifier outcomes, privileged teacher feedback, and reference-policy support into an explicit target distribution over complete reasoning trajectories, then fits that target with profiled trajectory balance.
+**FlowBalance** unifies these signals by defining the complete-response distribution that the policy should learn. For each on-policy response, it combines a verifier-derived group advantage with token-level log-probability gains from a privileged self-teacher. The teacher contribution is **sign-gated by the verifier advantage**, so dense feedback refines the verifier's direction rather than overriding it.
 
-### Why this matters
-
-- **Accuracy:** FlowSD achieves the best five-benchmark average on both Qwen3-4B and Qwen3-8B.
-- **Sampling performance:** On Qwen3-8B, FlowSD reaches **89.33% AIME24 Pass@16**.
-- **Efficiency:** FlowSD reaches 0.5 AIME24 validation accuracy in about **100 steps**, versus roughly 143 for GRPO—about **1.43× faster**.
-- **Stability:** FlowSD remains close to its peak over approximately 400 steps, while GRPO degrades after roughly step 180.
-- **Diversity:** FlowSD more than doubles GRPO's correct-only semantic strategy diversity on AIME24.
-
----
-
-## The central idea
-
-Standard RLVR answers:
-
-> Which sampled responses should receive more probability?
-
-FlowSD asks the stronger question:
-
-> **What normalized distribution should the policy represent over all sampled reasoning trajectories?**
-
-FlowSD assigns four distinct roles:
-
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Component</th>
-      <th align="center">Role</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><strong>Verifier advantage</strong></td>
-      <td align="center">Anchors the target to task success or failure</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>Privileged teacher gain</strong></td>
-      <td align="center">Supplies dense information along an already sampled trajectory</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>Reference policy</strong></td>
-      <td align="center">Preserves support from the pretrained reasoning distribution</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>Trajectory balance</strong></td>
-      <td align="center">Converts local signals into normalized relative probabilities over complete responses</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-The result is not merely another teacher-imitation loss. It is a **probability-conserving reasoning equilibrium**: verified, teacher-supported trajectories gain mass; verifier-rejected trajectories are suppressed through sign gating; and multiple successful solution modes can coexist.
+The resulting trajectory energy exponentially reweights a reference policy into a normalized target distribution. FlowBalance learns this target through **profiled trajectory balance**, using one stopped log-partition estimate per rollout group.
 
 <p align="center">
-  <img src="assets/llm_method_overview.png" width="96%" alt="FlowSD method overview for language-model reasoning">
+  <img src="assets/flowbalance_overview.png" width="96%" alt="FlowBalance distribution reweighting overview">
 </p>
-<p align="center"><sub><b>FlowSD for language-model reasoning.</b> Verifier-calibrated privileged feedback reweights the reference response distribution toward multiple successful reasoning modes.</sub></p>
+<p align="center"><sub><b>FlowBalance distribution reweighting.</b> Verifier advantages and sign-gated privileged-teacher gains move probability toward successful reasoning modes while preserving reference-supported diversity.</sub></p>
+
+### Highlights
+
+- **Best aggregate accuracy:** FlowBalance achieves the best five-benchmark average on both Qwen3-4B and Qwen3-8B.
+- **Improves FlowRL with dense supervision:** +1.04 average points on Qwen3-4B and +1.76 on Qwen3-8B.
+- **Strong sampling performance:** 89.33% AIME24 Pass@16 with Qwen3-8B.
+- **Faster optimization:** reaches 0.5 AIME24 validation accuracy in about 100 steps, versus roughly 143 for GRPO.
+- **Stable long training:** remains near peak performance over 400 steps while GRPO degrades after approximately step 180.
+- **Avoids direct-OPSD length collapse:** maintains substantially longer reasoning trajectories.
+- **Greater strategy diversity:** correct-only Simpson diversity of 0.2194, versus 0.1017 for GRPO and 0.1456 for RLSD in the controlled AIME24 diagnostic.
+
+---
+
+## Method
+
+For a prompt, the current policy samples a rollout group
+
+```math
+\mathcal G=(y^{(1)},\ldots,y^{(N)}).
+```
+
+The verifier produces a stopped group-relative advantage $A_i=A_{\mathcal G}(y^{(i)})$. A frozen privileged self-teacher conditions on training-only context $c$—for example, a reference solution or task feedback—and rescores the sampled tokens. Relative to the reference policy, these token scores are clipped and averaged into a dense trajectory gain $G_T$.
+
+FlowBalance defines the composite trajectory energy
+
+```math
+E_{\mathrm{FlowBalance},\mathcal G}(y^{(i)}\mid x,c)
+=
+\eta_A A_i
++
+\beta_T G_T(y^{(i)}\mid x,c)\,\operatorname{sign}(A_i).
+```
+
+The sign gate gives the verifier control over direction:
+
+- teacher support **reinforces** positive-advantage responses;
+- teacher pressure is **reversed** for negative-advantage responses;
+- the teacher term is **disabled** when the rollout group gives no outcome preference.
+
+Conditioned on the rollout group, the energy defines a reference-supported Gibbs target:
+
+```math
+p^*_{\mathrm{FlowBalance},\mathcal G}(y\mid x,c)
+\propto
+\pi_{\mathrm{ref}}(y\mid x)
+\exp\!\left(\frac{E_{\mathrm{FlowBalance},\mathcal G}(y\mid x,c)}{\tau}\right).
+```
+
+The policy fits this distribution using the trajectory-balance residual
+
+```math
+\Delta_{\mathrm{TB}}
+=
+\tau\log Z_{\mathrm{FlowBalance},\mathcal G}(x,c)
++
+\tau\log\frac{\pi_\theta(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)}
+-
+E_{\mathrm{FlowBalance},\mathcal G}(y\mid x,c).
+```
+
+One log-partition estimate is profiled from each rollout group, and gradients are stopped through the target-side quantities. Each component therefore has a distinct role:
+
+| Component | Role |
+|---|---|
+| **Verifier advantage** | Determines outcome-aligned direction |
+| **Privileged self-teacher** | Supplies dense evidence along sampled trajectories |
+| **Sign gate** | Prevents teacher confidence from overriding verified outcomes |
+| **Reference policy** | Controls support and policy drift |
+| **Trajectory balance** | Converts the composite energy into normalized relative probabilities over complete responses |
+
+Dense supervision is therefore realized as **distributional trajectory shaping**, not as a separate token-imitation loss.
 
 ---
 
 ## Main results
 
-All main-table entries are step-180 results reported as mean ± sample standard deviation over five random seeds. AIME24 uses Pass@16; HMMT25, Minerva, MATH500, and OlympiadBench use Pass@1. The average is the unweighted mean of the five benchmark means.
+All entries are step-180 results reported as mean ± sample standard deviation over five seeds. AIME24 uses Pass@16; HMMT25, Minerva, MATH500, and OlympiadBench use Pass@1. “Avg.” is the unweighted mean of the five benchmark means.
 
 ### Qwen3-4B
 
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Method</th>
-      <th align="center">AIME24@16</th>
-      <th align="center">HMMT25</th>
-      <th align="center">Minerva</th>
-      <th align="center">MATH500</th>
-      <th align="center">OlympiadBench</th>
-      <th align="center"><strong>Avg.</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">GRPO</td>
-      <td align="center">78.00 ± 1.83</td>
-      <td align="center">26.67 ± 2.36</td>
-      <td align="center">51.18 ± 1.36</td>
-      <td align="center">92.04 ± 0.98</td>
-      <td align="center">63.68 ± 0.58</td>
-      <td align="center">62.31</td>
-    </tr>
-    <tr>
-      <td align="center">RLSD</td>
-      <td align="center">73.33 ± 2.36</td>
-      <td align="center">21.33 ± 3.80</td>
-      <td align="center">50.29 ± 0.88</td>
-      <td align="center">91.44 ± 0.52</td>
-      <td align="center">61.36 ± 0.66</td>
-      <td align="center">59.55</td>
-    </tr>
-    <tr>
-      <td align="center">FlowRL</td>
-      <td align="center">75.33 ± 1.83</td>
-      <td align="center">30.67 ± 4.94</td>
-      <td align="center"><strong>51.99 ± 1.51</strong></td>
-      <td align="center">92.84 ± 0.62</td>
-      <td align="center">65.25 ± 0.49</td>
-      <td align="center">63.22</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>FlowSD</strong></td>
-      <td align="center"><strong>80.00 ± 0.00</strong></td>
-      <td align="center"><strong>32.00 ± 2.98</strong></td>
-      <td align="center">50.51 ± 0.56</td>
-      <td align="center"><strong>93.28 ± 0.59</strong></td>
-      <td align="center"><strong>65.49 ± 0.92</strong></td>
-      <td align="center"><strong>64.26</strong></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
+|---|---:|---:|---:|---:|---:|---:|
+| GRPO | 78.00 ± 1.83 | 26.67 ± 2.36 | 51.18 ± 1.36 | 92.04 ± 0.98 | 63.68 ± 0.58 | 62.31 |
+| OPSD | 65.33 ± 3.80 | 14.67 ± 2.98 | 47.28 ± 0.56 | 87.56 ± 1.34 | 55.76 ± 1.47 | 54.12 |
+| RLSD | 73.33 ± 2.36 | 21.33 ± 3.80 | 50.29 ± 0.88 | 91.44 ± 0.52 | 61.36 ± 0.66 | 59.55 |
+| FlowRL | 75.33 ± 1.83 | 30.67 ± 4.94 | **51.99 ± 1.51** | 92.84 ± 0.62 | 65.25 ± 0.49 | 63.22 |
+| **FlowBalance** | **80.00 ± 0.00** | **32.00 ± 2.98** | 50.51 ± 0.56 | **93.28 ± 0.59** | **65.49 ± 0.92** | **64.26** |
 
-**Takeaway:** FlowSD improves the five-benchmark average by **+1.95 points over GRPO**, **+4.71 over RLSD**, and **+1.04 over FlowRL**, while leading four of the five reported benchmarks; FlowRL leads Minerva.
+FlowBalance improves the aggregate by **+1.95 over GRPO**, **+10.14 over OPSD**, **+4.71 over RLSD**, and **+1.04 over FlowRL**. It leads four of the five benchmarks; FlowRL leads Minerva.
 
 ### Qwen3-8B
 
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Method</th>
-      <th align="center">AIME24@16</th>
-      <th align="center">HMMT25</th>
-      <th align="center">Minerva</th>
-      <th align="center">MATH500</th>
-      <th align="center">OlympiadBench</th>
-      <th align="center"><strong>Avg.</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">GRPO</td>
-      <td align="center">85.33 ± 1.83</td>
-      <td align="center">31.33 ± 7.67</td>
-      <td align="center">52.87 ± 1.02</td>
-      <td align="center">93.16 ± 0.83</td>
-      <td align="center">64.78 ± 0.62</td>
-      <td align="center">65.49</td>
-    </tr>
-    <tr>
-      <td align="center">RLSD</td>
-      <td align="center">82.67 ± 3.65</td>
-      <td align="center">28.00 ± 1.83</td>
-      <td align="center">52.94 ± 1.38</td>
-      <td align="center">93.44 ± 0.17</td>
-      <td align="center">63.56 ± 1.19</td>
-      <td align="center">64.12</td>
-    </tr>
-    <tr>
-      <td align="center">FlowRL</td>
-      <td align="center">86.67 ± 0.00</td>
-      <td align="center">30.67 ± 4.35</td>
-      <td align="center">52.79 ± 1.37</td>
-      <td align="center">92.92 ± 0.50</td>
-      <td align="center">66.20 ± 1.05</td>
-      <td align="center">65.85</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>FlowSD</strong></td>
-      <td align="center"><strong>89.33 ± 1.49</strong></td>
-      <td align="center"><strong>34.67 ± 9.89</strong></td>
-      <td align="center"><strong>53.68 ± 0.78</strong></td>
-      <td align="center"><strong>93.52 ± 0.30</strong></td>
-      <td align="center"><strong>66.85 ± 0.46</strong></td>
-      <td align="center"><strong>67.61</strong></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+| Method | AIME24@16 | HMMT25 | Minerva | MATH500 | OlympiadBench | **Avg.** |
+|---|---:|---:|---:|---:|---:|---:|
+| GRPO | 85.33 ± 1.83 | 31.33 ± 7.67 | 52.87 ± 1.02 | 93.16 ± 0.83 | 64.78 ± 0.62 | 65.49 |
+| OPSD | 48.67 ± 3.80 | 4.00 ± 3.65 | 38.46 ± 3.85 | 74.56 ± 4.81 | 40.09 ± 3.57 | 41.16 |
+| RLSD | 82.67 ± 3.65 | 28.00 ± 1.83 | 52.94 ± 1.38 | 93.44 ± 0.17 | 63.56 ± 1.19 | 64.12 |
+| FlowRL | 86.67 ± 0.00 | 30.67 ± 4.35 | 52.79 ± 1.37 | 92.92 ± 0.50 | 66.20 ± 1.05 | 65.85 |
+| **FlowBalance** | **89.33 ± 1.49** | **34.67 ± 9.89** | **53.68 ± 0.78** | **93.52 ± 0.30** | **66.85 ± 0.46** | **67.61** |
 
-**Takeaway:** FlowSD obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 points over GRPO**, **+3.49 over RLSD**, and **+1.76 over FlowRL**.
+FlowBalance obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 over GRPO**, **+26.45 over OPSD**, **+3.49 over RLSD**, and **+1.76 over FlowRL**.
 
-### Where the gains are strongest
+### Ablations
 
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Result</th>
-      <th align="center">FlowSD</th>
-      <th align="center">Best baseline</th>
-      <th align="center">Gain</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">Qwen3-4B average</td>
-      <td align="center"><strong>64.26</strong></td>
-      <td align="center">63.22 FlowRL</td>
-      <td align="center"><strong>+1.04</strong></td>
-    </tr>
-    <tr>
-      <td align="center">Qwen3-8B average</td>
-      <td align="center"><strong>67.61</strong></td>
-      <td align="center">65.85 FlowRL</td>
-      <td align="center"><strong>+1.76</strong></td>
-    </tr>
-    <tr>
-      <td align="center">Qwen3-8B AIME24@16</td>
-      <td align="center"><strong>89.33</strong></td>
-      <td align="center">86.67 FlowRL</td>
-      <td align="center"><strong>+2.66</strong></td>
-    </tr>
-    <tr>
-      <td align="center">Qwen3-8B OlympiadBench</td>
-      <td align="center"><strong>66.85</strong></td>
-      <td align="center">66.20 FlowRL</td>
-      <td align="center"><strong>+0.65</strong></td>
-    </tr>
-    <tr>
-      <td align="center">Qwen3-4B HMMT25</td>
-      <td align="center"><strong>32.00</strong></td>
-      <td align="center">30.67 FlowRL</td>
-      <td align="center"><strong>+1.33</strong></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+The paper studies the verifier coefficient $\eta_A$ and privileged-teacher coefficient $\beta_T$ using Qwen3-8B and the same five-benchmark average.
 
-These results support the distributional view: the largest gain appears on sampling-heavy AIME24 Pass@16, while improvements on Pass@1 benchmarks show that FlowSD does not trade broad single-sample accuracy for sampling performance.
+| $\eta_A$ | 5 | 10 | **15** |
+|---:|---:|---:|---:|
+| Avg. | 65.65 | 65.41 | **67.61** |
+
+| $\beta_T$ | **1** | 2 | 3 |
+|---:|---:|---:|---:|
+| Avg. | **67.61** | 66.48 | 65.95 |
+
+The default setting is $\eta_A=15$ and $\beta_T=1$.
 
 ---
 
-## More than accuracy: strategy diversity
+## Training dynamics
 
-A reasoning model can produce many correct samples that are merely surface-level rewrites of one dominant strategy. The paper therefore evaluates **semantic strategy diversity**, not lexical diversity.
+<p align="center">
+  <img src="assets/flowbalance_training_acceleration.png" width="31%" alt="FlowBalance training acceleration">
+  <img src="assets/flowbalance_training_stability.png" width="31%" alt="FlowBalance training stability">
+  <img src="assets/flowbalance_response_length.png" width="31%" alt="FlowBalance response length compared with direct OPSD">
+</p>
 
-The two-stage LLM-judge protocol:
+On Qwen3-8B:
 
-1. extracts the mathematical representation, tools, theorems, and strategy signature from each complete response;
-2. clusters anonymized strategy summaries within each problem and method.
+1. **Acceleration:** FlowBalance reaches 0.5 AIME24 validation accuracy in about 100 steps, compared with roughly 143 steps for GRPO—a **1.43× speedup**.
+2. **Stability:** FlowBalance remains near its peak throughout 400 training steps, while GRPO degrades sharply after approximately step 180.
+3. **Response length:** direct OPSD rapidly collapses to short responses, whereas FlowBalance maintains substantially longer reasoning trajectories.
+
+---
+
+## Strategy diversity
+
+The paper evaluates **semantic strategy diversity**, rather than lexical variation. A judge extracts the mathematical representation, tools, theorems, and strategy signature from each complete response, then clusters solutions that share the same core strategy.
 
 Correct-only Simpson diversity is
 
 ```math
-D_{\mathrm{Simpson}}=1-\sum_k p_k^2.
+D_{\mathrm{Simpson}}=1-\sum_k p_k^2,
 ```
 
-which is the probability that two sampled correct trajectories use different semantic strategies.
+where $p_k$ is the fraction of correct trajectories assigned to strategy cluster $k$. It is the probability that two sampled correct trajectories use different semantic strategies.
 
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Method</th>
-      <th align="center">Correct-only Simpson diversity</th>
-      <th align="center">Relative to GRPO</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">GRPO</td>
-      <td align="center">0.1017</td>
-      <td align="center">1.00×</td>
-    </tr>
-    <tr>
-      <td align="center">RLSD</td>
-      <td align="center">0.1456</td>
-      <td align="center">1.43×</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>FlowSD</strong></td>
-      <td align="center"><strong>0.2194</strong></td>
-      <td align="center"><strong>2.16×</strong></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+| Method | Correct-only Simpson diversity | Relative to GRPO |
+|---|---:|---:|
+| GRPO | 0.1017 | 1.00× |
+| RLSD | 0.1456 | 1.43× |
+| **FlowBalance** | **0.2194** | **2.16×** |
 
 <p align="center">
-  <img src="assets/llm_strategy_diversity.png" width="58%" alt="LLM-judged semantic strategy diversity on AIME24">
+  <img src="assets/flowbalance_strategy_diversity.png" width="62%" alt="FlowBalance LLM-judged semantic strategy diversity on AIME24">
 </p>
 
-**FlowSD more than doubles GRPO's judged strategy diversity** in the AIME24 step-180, seed-0 diagnostic. This is the intended behavior of distributional self-distillation: allocate probability to multiple successful reasoning modes instead of collapsing onto the first dominant template.
+Within this controlled AIME24 diagnostic, FlowBalance's successful responses span a broader range of semantic solution strategies. For example, on AIME24 Problem 23, FlowBalance discovers a hidden rectangular-box embedding while the representative GRPO response follows the more common Cayley–Menger determinant route.
 
 ---
 
-## Canonical implementation
+## Implementation
 
-All public interfaces consistently use FlowSD/`flowsd`:
+> [!NOTE]
+> **FlowBalance is the paper and project name.** The current implementation retains the historical internal identifier `flowsd` in package paths, configuration keys, launch scripts, environment variables, and old checkpoint labels. This avoids breaking existing experiments and artifacts; these identifiers refer to the FlowBalance implementation in this repository.
 
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="center">Interface</th>
-      <th align="center">Canonical name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">Python package</td>
-      <td align="center"><code>recipe.flowsd</code></td>
-    </tr>
-    <tr>
-      <td align="center">Main module</td>
-      <td align="center"><code>recipe.flowsd.main_flowsd</code></td>
-    </tr>
-    <tr>
-      <td align="center">Config class</td>
-      <td align="center"><code>FlowSDConfig</code></td>
-    </tr>
-    <tr>
-      <td align="center">Hydra block</td>
-      <td align="center"><code>actor_rollout_ref.actor.flowsd</code></td>
-    </tr>
-    <tr>
-      <td align="center">Loss mode</td>
-      <td align="center"><code>flowsd</code></td>
-    </tr>
-    <tr>
-      <td align="center">Environment variables</td>
-      <td align="center"><code>FLOWSD_*</code></td>
-    </tr>
-    <tr>
-      <td align="center">Metric prefix</td>
-      <td align="center"><code>flowsd/</code></td>
-    </tr>
-    <tr>
-      <td align="center">Launcher</td>
-      <td align="center"><code>recipe/flowsd/run_math_flowsd.sh</code></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+| Interface | Current compatibility identifier |
+|---|---|
+| Python package | `recipe.flowsd` |
+| Main module | `recipe.flowsd.main_flowsd` |
+| Config class | `FlowSDConfig` |
+| Hydra block | `actor_rollout_ref.actor.flowsd` |
+| Loss mode | `flowsd` |
+| Environment variables | `FLOWSD_*` |
+| Metric prefix | `flowsd/` |
+| Launcher | `recipe/flowsd/run_math_flowsd.sh` |
 
 ### Repository layout
 
 ```text
-FlowSD/
+FlowBalance/
 ├── assets/              # README and paper figures
 ├── recipe/
-│   ├── flowsd/          # Canonical FlowSD implementation
+│   ├── flowsd/          # FlowBalance implementation (legacy internal path)
 │   ├── grpo/            # GRPO baseline
 │   ├── rlsd/            # RLSD baseline
-│   ├── opsd/            # Forward-KL OPSD baseline
+│   ├── opsd/            # Direct OPSD baseline
 │   ├── sdpo/            # Shared privileged-distillation utilities
 │   └── antisd/          # Anti-self-distillation baseline
 ├── core/                # Shared trainers, workers, datasets, and rewards
 ├── evaluation/math/     # Math inference, grading, and aggregation
-├── evaluation/code/     # Code evaluation utilities
 ├── analysis/diversity/  # Semantic strategy-diversity analysis
 ├── launch/              # Multi-node launcher
 ├── scripts/             # Environment and release checks
@@ -424,9 +272,11 @@ bash recipe/flowsd/run_math_flowsd.sh
 
 ### Step-180 paper-style run
 
+The current code maps paper coefficient $\beta_T$ to `FLOWSD_BETA_Q` and $\eta_A$ to `FLOWSD_ETA_R`.
+
 ```bash
-PROJECT_NAME=verl-flowsd \
-EXP_NAME=FlowSD-Qwen3-8B-math-step180 \
+PROJECT_NAME=verl-flowbalance \
+EXP_NAME=FlowBalance-Qwen3-8B-math-step180 \
 MODEL_PATH=/path/to/Qwen3-8B \
 TRAIN_FILE=/path/to/train_dapo17k.parquet \
 TEST_FILE=/path/to/aime24_30_boxed.parquet \
@@ -464,11 +314,11 @@ bash launch/start.sh
 
 ## Evaluation
 
-The step-180 evaluator supports five seeds, seven n=1 math benchmarks, and n=16 evaluation on AIME24/25/26.
+The step-180 evaluator supports five seeds, seven single-sample math benchmarks, and $n=16$ evaluation on AIME24/25/26.
 
 ```bash
 RUN_DIR=/path/to/experiment \
-EXPERIMENT_NAME=FlowSD-Qwen3-8B-math-step180 \
+EXPERIMENT_NAME=FlowBalance-Qwen3-8B-math-step180 \
 VAL_STEP=180 \
 VAL_SEEDS="0 1 2 3 4" \
 VAL_KEEP_MERGED_MODEL=1 \
@@ -486,14 +336,14 @@ aime_sample_pass1_n16_mean_std_percent.csv
 .complete
 ```
 
-### Run the paper ablations
+### Paper ablations
 
 ```bash
-# Verifier coefficient
+# Verifier coefficient η_A
 ETA_SWEEP_VALUES="5 10 15" \
 bash recipe/flowsd/run_math_flowsd_eta_sweep.sh
 
-# Teacher coefficient
+# Privileged-teacher coefficient β_T
 bash recipe/flowsd/run_math_flowsd_betaT_resume_sweep.sh
 ```
 
@@ -508,20 +358,21 @@ A strict reproduction should record:
 - model and dataset hashes;
 - rollout group size and response-length cap;
 - verifier implementation;
-- `FLOWSD_ETA_R`, `FLOWSD_BETA_Q`, `FLOWSD_CLIP_B`, and `FLOWSD_RHO`;
-- reference and teacher refresh semantics;
+- verifier and teacher coefficients (`FLOWSD_ETA_R` and `FLOWSD_BETA_Q` in the current code);
+- clipping and residual settings;
+- reference/teacher refresh semantics;
 - checkpoint step and evaluation protocol.
 
-Historical checkpoint paths may retain immutable experiment labels. The maintained source code and public interfaces use only FlowSD/`flowsd`.
+Historical source paths and checkpoints may retain `FlowSD`/`flowsd` labels. They are compatibility identifiers for the method now presented as **FlowBalance**.
 
 ---
 
 ## Citation
 
 ```bibtex
-@article{huang2026flowsd,
-  title   = {FlowSD: Trajectory-Balanced On-Policy Self-Distillation},
-  author  = {Zixun Huang and Kishan Panaganti and Haitao Mi and Leowei Liang},
-  year    = {2026}
+@article{huang2026flowbalance,
+  title  = {FlowBalance: A Dense-Supervision-Motivated Trajectory Balance Method for LLM Reasoning},
+  author = {Zixun Huang and Kishan Panaganti and Haitao Mi and Leowei Liang},
+  year   = {2026}
 }
 ```
