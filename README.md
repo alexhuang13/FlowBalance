@@ -57,7 +57,7 @@ E_{\mathrm{FlowBalance},\mathcal G}(y^{(i)}\mid x,c)
 =
 \eta_A A_i
 +
-\beta_T G_T(y^{(i)}\mid x,c)\,\operatorname{sign}(A_i).
+\beta_T G_T(y^{(i)}\mid x,c)\,\mathrm{sign}(A_i).
 ```
 
 The sign gate gives the verifier control over direction:

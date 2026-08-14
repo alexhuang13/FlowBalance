@@ -51,7 +51,7 @@ For response \(y\), FlowSD computes the privileged gain
 
 \[
 G_T(y)=\frac{1}{T^\rho}\sum_t
-\operatorname{clip}\left(
+\mathrm{clip}\left(
 \log\pi_T(y_t\mid s_t,c)-\log\pi_{\mathrm{ref}}(y_t\mid s_t),-B,B
 \right),
 \]
@@ -59,7 +59,7 @@ G_T(y)=\frac{1}{T^\rho}\sum_t
 and the sign-gated energy
 
 \[
-E(y)=\eta_A A(y)+\beta_TG_T(y)\operatorname{sign}(A(y)).
+E(y)=\eta_A A(y)+\beta_TG_T(y)\mathrm{sign}(A(y)).
 \]
 
 The target distribution is
