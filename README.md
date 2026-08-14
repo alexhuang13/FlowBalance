@@ -371,10 +371,6 @@ where $p_k$ is the fraction of correct trajectories assigned to strategy cluster
 </table>
 </div>
 
-<p align="center">
-  <img src="assets/flowbalance_strategy_diversity.png" width="62%" alt="FlowBalance LLM-judged semantic strategy diversity on AIME24">
-</p>
-
 Within this controlled AIME24 diagnostic, FlowBalance's successful responses span a broader range of semantic solution strategies. For example, on AIME24 Problem 23, FlowBalance discovers a hidden rectangular-box embedding while the representative GRPO response follows the more common Cayley–Menger determinant route.
 
 ---
