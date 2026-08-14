@@ -377,54 +377,6 @@ Within this controlled AIME24 diagnostic, FlowBalance's successful responses spa
 
 ## Implementation
 
-> [!NOTE]
-> **FlowBalance is the paper and project name.** The current implementation retains the historical internal identifier `flowsd` in package paths, configuration keys, launch scripts, environment variables, and old checkpoint labels. This avoids breaking existing experiments and artifacts; these identifiers refer to the FlowBalance implementation in this repository.
-
-<div align="center">
-<table>
-  <thead>
-    <tr>
-      <th align="left"><sub>Interface</sub></th>
-      <th align="left"><sub>Current compatibility identifier</sub></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left"><sub>Python package</sub></td>
-      <td align="left"><sub><code>recipe.flowsd</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Main module</sub></td>
-      <td align="left"><sub><code>recipe.flowsd.main_flowsd</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Config class</sub></td>
-      <td align="left"><sub><code>FlowSDConfig</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Hydra block</sub></td>
-      <td align="left"><sub><code>actor_rollout_ref.actor.flowsd</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Loss mode</sub></td>
-      <td align="left"><sub><code>flowsd</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Environment variables</sub></td>
-      <td align="left"><sub><code>FLOWSD_*</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Metric prefix</sub></td>
-      <td align="left"><sub><code>flowsd/</code></sub></td>
-    </tr>
-    <tr>
-      <td align="left"><sub>Launcher</sub></td>
-      <td align="left"><sub><code>recipe/flowsd/run_math_flowsd.sh</code></sub></td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 ### Repository layout
 
 ```text
