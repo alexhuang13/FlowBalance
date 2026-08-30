@@ -24,14 +24,14 @@ Long-horizon reasoning needs two kinds of supervision:
 The resulting trajectory energy exponentially reweights a reference policy into a normalized target distribution. FlowBalance learns this target through **profiled trajectory balance**, using one stopped log-partition estimate per rollout group.
 
 <p align="center">
-  <img src="assets/flowbalance_overview.png" width="96%" alt="FlowBalance distribution reweighting overview">
+  <img src="assets/flowbalance_overview.png" width="96%" alt="Five-stage FlowBalance self-improvement cycle">
 </p>
-<p align="center"><sub><b>FlowBalance distribution reweighting.</b> Verifier advantages and sign-gated privileged-teacher gains move probability toward successful reasoning modes while preserving reference-supported diversity.</sub></p>
+<p align="center"><sub><b>FlowBalance self-improvement cycle.</b> The policy generates on-policy experience; a verifier supplies reliable outcomes; a frozen privileged view supplies dense self-guidance; sign gating grounds that guidance in verified outcomes; and profiled trajectory balance learns the resulting normalized distribution over complete responses.</sub></p>
 
 ### Highlights
 
 - **Best aggregate accuracy:** FlowBalance achieves the best five-benchmark average on both Qwen3-4B and Qwen3-8B.
-- **Improves FlowRL with dense supervision:** +1.04 average points on Qwen3-4B and +1.76 on Qwen3-8B.
+- **Gains over GRPO and OPSD:** on the five-benchmark average, FlowBalance improves by **+1.95 / +10.14 points** on Qwen3-4B and **+2.12 / +26.45 points** on Qwen3-8B (GRPO / OPSD).
 - **Strong sampling performance:** 89.33% AIME24 Pass@16 with Qwen3-8B.
 - **Faster optimization:** reaches 0.5 AIME24 validation accuracy in about 100 steps, versus roughly 143 for GRPO.
 - **Stable long training:** remains near peak performance over 400 steps while GRPO degrades after approximately step 180.
@@ -371,7 +371,14 @@ where $p_k$ is the fraction of correct trajectories assigned to strategy cluster
 </table>
 </div>
 
-Within this controlled AIME24 diagnostic, FlowBalance's successful responses span a broader range of semantic solution strategies. For example, on AIME24 Problem 23, FlowBalance discovers a hidden rectangular-box embedding while the representative GRPO response follows the more common Cayley–Menger determinant route.
+Within this controlled AIME24 diagnostic, FlowBalance's successful responses span a broader range of semantic solution strategies. The representative traces differ in the mathematical object that drives the derivation, not merely in wording or response length:
+
+- **Problem 23 — distance determinant vs. box embedding.** A representative GRPO response uses the Cayley–Menger determinant. FlowBalance instead recognizes $41=4^2+5^2$, $80=4^2+8^2$, and $89=5^2+8^2$, revealing a hidden $4\times5\times8$ rectangular box. Both routes obtain $r=20\sqrt{21}/63$ and answer $104$.
+- **Problem 5 — envelope vs. multiple root.** Two correct FlowBalance trajectories characterize the unique point on a unit-intercept segment either as a tangency point on the astroid $x^{2/3}+y^{2/3}=1$ or by forcing the known segment to be a double root of a trigonometric equation. Both give $OC^2=7/16$ and answer $23$.
+- **Problem 15 — planar tangency vs. implicit normals.** One FlowBalance trajectory reduces torus–sphere contact to two circle tangencies in a meridian plane; another keeps the three-dimensional implicit surfaces and imposes collinear normals in cylindrical coordinates. Both obtain $r_i-r_o=99/28$ and answer $127$.
+- **Problem 27 — coordinate elimination vs. conic parameterization.** Two FlowBalance trajectories optimize the same hyperbola-rhombus diagonal using either squared-variable elimination or a secant–tangent parameterization. Both show $BD^2>480$ with infimum $480$.
+
+Together, these cases help explain the higher correct-only Simpson diversity: FlowBalance assigns probability to genuinely different correct derivational backbones rather than stylistic rewrites of one dominant template. This remains a controlled, one-seed, LLM-judged diagnostic rather than a population-level diversity guarantee.
 
 ---
 
