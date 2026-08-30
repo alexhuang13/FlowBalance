@@ -128,7 +128,7 @@ Dense supervision is therefore realized as **distributional trajectory shaping**
 
 ## Main results
 
-All entries are step-180 results reported as mean ± sample standard deviation over five seeds. AIME24 uses Pass@16; HMMT25, Minerva, MATH500, and OlympiadBench use Pass@1. “Avg.” is the unweighted mean of the five benchmark means.
+All entries are step-180 results reported as mean ± sample standard deviation over five seeds. AIME24 uses Pass@16; HMMT25, Minerva, MATH500, and OlympiadBench use Pass@1. “Avg.” is the unweighted mean of the five benchmark means. GRPO is the baseline; the second line in every other cell is the difference from GRPO (<font color="#1a7f37">🟢 positive</font>, <font color="#cf222e">🔴 negative</font>).
 
 ### Qwen3-4B
 
@@ -147,7 +147,7 @@ All entries are step-180 results reported as mean ± sample standard deviation o
   </thead>
   <tbody>
     <tr>
-      <td align="left"><sub>GRPO</sub></td>
+      <td align="left"><sub>GRPO<br><strong>baseline</strong></sub></td>
       <td align="right"><sub>78.00 ± 1.83</sub></td>
       <td align="right"><sub>26.67 ± 2.36</sub></td>
       <td align="right"><sub>51.18 ± 1.36</sub></td>
@@ -157,39 +157,39 @@ All entries are step-180 results reported as mean ± sample standard deviation o
     </tr>
     <tr>
       <td align="left"><sub>OPSD</sub></td>
-      <td align="right"><sub>65.33 ± 3.80</sub></td>
-      <td align="right"><sub>14.67 ± 2.98</sub></td>
-      <td align="right"><sub>47.28 ± 0.56</sub></td>
-      <td align="right"><sub>87.56 ± 1.34</sub></td>
-      <td align="right"><sub>55.76 ± 1.47</sub></td>
-      <td align="right"><sub>54.12</sub></td>
+      <td align="right"><sub>65.33 ± 3.80<br><font color="#cf222e">🔴 -12.67</font></sub></td>
+      <td align="right"><sub>14.67 ± 2.98<br><font color="#cf222e">🔴 -12.00</font></sub></td>
+      <td align="right"><sub>47.28 ± 0.56<br><font color="#cf222e">🔴 -3.90</font></sub></td>
+      <td align="right"><sub>87.56 ± 1.34<br><font color="#cf222e">🔴 -4.48</font></sub></td>
+      <td align="right"><sub>55.76 ± 1.47<br><font color="#cf222e">🔴 -7.92</font></sub></td>
+      <td align="right"><sub>54.12<br><font color="#cf222e">🔴 -8.19</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub>RLSD</sub></td>
-      <td align="right"><sub>73.33 ± 2.36</sub></td>
-      <td align="right"><sub>21.33 ± 3.80</sub></td>
-      <td align="right"><sub>50.29 ± 0.88</sub></td>
-      <td align="right"><sub>91.44 ± 0.52</sub></td>
-      <td align="right"><sub>61.36 ± 0.66</sub></td>
-      <td align="right"><sub>59.55</sub></td>
+      <td align="right"><sub>73.33 ± 2.36<br><font color="#cf222e">🔴 -4.67</font></sub></td>
+      <td align="right"><sub>21.33 ± 3.80<br><font color="#cf222e">🔴 -5.34</font></sub></td>
+      <td align="right"><sub>50.29 ± 0.88<br><font color="#cf222e">🔴 -0.89</font></sub></td>
+      <td align="right"><sub>91.44 ± 0.52<br><font color="#cf222e">🔴 -0.60</font></sub></td>
+      <td align="right"><sub>61.36 ± 0.66<br><font color="#cf222e">🔴 -2.32</font></sub></td>
+      <td align="right"><sub>59.55<br><font color="#cf222e">🔴 -2.76</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub>FlowRL</sub></td>
-      <td align="right"><sub>75.33 ± 1.83</sub></td>
-      <td align="right"><sub>30.67 ± 4.94</sub></td>
-      <td align="right"><sub><strong>51.99 ± 1.51</strong></sub></td>
-      <td align="right"><sub>92.84 ± 0.62</sub></td>
-      <td align="right"><sub>65.25 ± 0.49</sub></td>
-      <td align="right"><sub>63.22</sub></td>
+      <td align="right"><sub>75.33 ± 1.83<br><font color="#cf222e">🔴 -2.67</font></sub></td>
+      <td align="right"><sub>30.67 ± 4.94<br><font color="#1a7f37">🟢 +4.00</font></sub></td>
+      <td align="right"><sub><strong>51.99 ± 1.51</strong><br><font color="#1a7f37">🟢 +0.81</font></sub></td>
+      <td align="right"><sub>92.84 ± 0.62<br><font color="#1a7f37">🟢 +0.80</font></sub></td>
+      <td align="right"><sub>65.25 ± 0.49<br><font color="#1a7f37">🟢 +1.57</font></sub></td>
+      <td align="right"><sub>63.22<br><font color="#1a7f37">🟢 +0.91</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub><strong>FlowBalance</strong></sub></td>
-      <td align="right"><sub><strong>80.00 ± 0.00</strong></sub></td>
-      <td align="right"><sub><strong>32.00 ± 2.98</strong></sub></td>
-      <td align="right"><sub>50.51 ± 0.56</sub></td>
-      <td align="right"><sub><strong>93.28 ± 0.59</strong></sub></td>
-      <td align="right"><sub><strong>65.49 ± 0.92</strong></sub></td>
-      <td align="right"><sub><strong>64.26</strong></sub></td>
+      <td align="right"><sub><strong>80.00 ± 0.00</strong><br><font color="#1a7f37">🟢 +2.00</font></sub></td>
+      <td align="right"><sub><strong>32.00 ± 2.98</strong><br><font color="#1a7f37">🟢 +5.33</font></sub></td>
+      <td align="right"><sub>50.51 ± 0.56<br><font color="#cf222e">🔴 -0.67</font></sub></td>
+      <td align="right"><sub><strong>93.28 ± 0.59</strong><br><font color="#1a7f37">🟢 +1.24</font></sub></td>
+      <td align="right"><sub><strong>65.49 ± 0.92</strong><br><font color="#1a7f37">🟢 +1.81</font></sub></td>
+      <td align="right"><sub><strong>64.26</strong><br><font color="#1a7f37">🟢 +1.95</font></sub></td>
     </tr>
   </tbody>
 </table>
@@ -214,7 +214,7 @@ FlowBalance improves the aggregate by **+1.95 over GRPO**. It leads four of the 
   </thead>
   <tbody>
     <tr>
-      <td align="left"><sub>GRPO</sub></td>
+      <td align="left"><sub>GRPO<br><strong>baseline</strong></sub></td>
       <td align="right"><sub>85.33 ± 1.83</sub></td>
       <td align="right"><sub>31.33 ± 7.67</sub></td>
       <td align="right"><sub>52.87 ± 1.02</sub></td>
@@ -224,39 +224,39 @@ FlowBalance improves the aggregate by **+1.95 over GRPO**. It leads four of the 
     </tr>
     <tr>
       <td align="left"><sub>OPSD</sub></td>
-      <td align="right"><sub>48.67 ± 3.80</sub></td>
-      <td align="right"><sub>4.00 ± 3.65</sub></td>
-      <td align="right"><sub>38.46 ± 3.85</sub></td>
-      <td align="right"><sub>74.56 ± 4.81</sub></td>
-      <td align="right"><sub>40.09 ± 3.57</sub></td>
-      <td align="right"><sub>41.16</sub></td>
+      <td align="right"><sub>48.67 ± 3.80<br><font color="#cf222e">🔴 -36.66</font></sub></td>
+      <td align="right"><sub>4.00 ± 3.65<br><font color="#cf222e">🔴 -27.33</font></sub></td>
+      <td align="right"><sub>38.46 ± 3.85<br><font color="#cf222e">🔴 -14.41</font></sub></td>
+      <td align="right"><sub>74.56 ± 4.81<br><font color="#cf222e">🔴 -18.60</font></sub></td>
+      <td align="right"><sub>40.09 ± 3.57<br><font color="#cf222e">🔴 -24.69</font></sub></td>
+      <td align="right"><sub>41.16<br><font color="#cf222e">🔴 -24.33</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub>RLSD</sub></td>
-      <td align="right"><sub>82.67 ± 3.65</sub></td>
-      <td align="right"><sub>28.00 ± 1.83</sub></td>
-      <td align="right"><sub>52.94 ± 1.38</sub></td>
-      <td align="right"><sub>93.44 ± 0.17</sub></td>
-      <td align="right"><sub>63.56 ± 1.19</sub></td>
-      <td align="right"><sub>64.12</sub></td>
+      <td align="right"><sub>82.67 ± 3.65<br><font color="#cf222e">🔴 -2.66</font></sub></td>
+      <td align="right"><sub>28.00 ± 1.83<br><font color="#cf222e">🔴 -3.33</font></sub></td>
+      <td align="right"><sub>52.94 ± 1.38<br><font color="#1a7f37">🟢 +0.07</font></sub></td>
+      <td align="right"><sub>93.44 ± 0.17<br><font color="#1a7f37">🟢 +0.28</font></sub></td>
+      <td align="right"><sub>63.56 ± 1.19<br><font color="#cf222e">🔴 -1.22</font></sub></td>
+      <td align="right"><sub>64.12<br><font color="#cf222e">🔴 -1.37</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub>FlowRL</sub></td>
-      <td align="right"><sub>86.67 ± 0.00</sub></td>
-      <td align="right"><sub>30.67 ± 4.35</sub></td>
-      <td align="right"><sub>52.79 ± 1.37</sub></td>
-      <td align="right"><sub>92.92 ± 0.50</sub></td>
-      <td align="right"><sub>66.20 ± 1.05</sub></td>
-      <td align="right"><sub>65.85</sub></td>
+      <td align="right"><sub>86.67 ± 0.00<br><font color="#1a7f37">🟢 +1.34</font></sub></td>
+      <td align="right"><sub>30.67 ± 4.35<br><font color="#cf222e">🔴 -0.66</font></sub></td>
+      <td align="right"><sub>52.79 ± 1.37<br><font color="#cf222e">🔴 -0.08</font></sub></td>
+      <td align="right"><sub>92.92 ± 0.50<br><font color="#cf222e">🔴 -0.24</font></sub></td>
+      <td align="right"><sub>66.20 ± 1.05<br><font color="#1a7f37">🟢 +1.42</font></sub></td>
+      <td align="right"><sub>65.85<br><font color="#1a7f37">🟢 +0.36</font></sub></td>
     </tr>
     <tr>
       <td align="left"><sub><strong>FlowBalance</strong></sub></td>
-      <td align="right"><sub><strong>89.33 ± 1.49</strong></sub></td>
-      <td align="right"><sub><strong>34.67 ± 9.89</strong></sub></td>
-      <td align="right"><sub><strong>53.68 ± 0.78</strong></sub></td>
-      <td align="right"><sub><strong>93.52 ± 0.30</strong></sub></td>
-      <td align="right"><sub><strong>66.85 ± 0.46</strong></sub></td>
-      <td align="right"><sub><strong>67.61</strong></sub></td>
+      <td align="right"><sub><strong>89.33 ± 1.49</strong><br><font color="#1a7f37">🟢 +4.00</font></sub></td>
+      <td align="right"><sub><strong>34.67 ± 9.89</strong><br><font color="#1a7f37">🟢 +3.34</font></sub></td>
+      <td align="right"><sub><strong>53.68 ± 0.78</strong><br><font color="#1a7f37">🟢 +0.81</font></sub></td>
+      <td align="right"><sub><strong>93.52 ± 0.30</strong><br><font color="#1a7f37">🟢 +0.36</font></sub></td>
+      <td align="right"><sub><strong>66.85 ± 0.46</strong><br><font color="#1a7f37">🟢 +2.07</font></sub></td>
+      <td align="right"><sub><strong>67.61</strong><br><font color="#1a7f37">🟢 +2.12</font></sub></td>
     </tr>
   </tbody>
 </table>
