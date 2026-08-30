@@ -31,7 +31,7 @@ The resulting trajectory energy exponentially reweights a reference policy into 
 ### Highlights
 
 - **Best aggregate accuracy:** FlowBalance achieves the best five-benchmark average on both Qwen3-4B and Qwen3-8B.
-- **Gains over GRPO and OPSD:** on the five-benchmark average, FlowBalance improves by **+1.95 / +10.14 points** on Qwen3-4B and **+2.12 / +26.45 points** on Qwen3-8B (GRPO / OPSD).
+- **Gains over GRPO:** on the five-benchmark average, FlowBalance improves by **+1.95 points** on Qwen3-4B and **+2.12 points** on Qwen3-8B.
 - **Strong sampling performance:** 89.33% AIME24 Pass@16 with Qwen3-8B.
 - **Faster optimization:** reaches 0.5 AIME24 validation accuracy in about 100 steps, versus roughly 143 for GRPO.
 - **Stable long training:** remains near peak performance over 400 steps while GRPO degrades after approximately step 180.
@@ -195,7 +195,7 @@ All entries are step-180 results reported as mean ± sample standard deviation o
 </table>
 </div>
 
-FlowBalance improves the aggregate by **+1.95 over GRPO**, **+10.14 over OPSD**, **+4.71 over RLSD**, and **+1.04 over FlowRL**. It leads four of the five benchmarks; FlowRL leads Minerva.
+FlowBalance improves the aggregate by **+1.95 over GRPO**. It leads four of the five benchmarks; FlowRL leads Minerva.
 
 ### Qwen3-8B
 
@@ -262,7 +262,7 @@ FlowBalance improves the aggregate by **+1.95 over GRPO**, **+10.14 over OPSD**,
 </table>
 </div>
 
-FlowBalance obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 over GRPO**, **+26.45 over OPSD**, **+3.49 over RLSD**, and **+1.76 over FlowRL**.
+FlowBalance obtains the best mean on **every reported benchmark**, improving the aggregate by **+2.12 over GRPO**.
 
 ### Ablations
 
