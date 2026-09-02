@@ -1,6 +1,6 @@
 <div align="center">
 
-# FlowBalance: A Dense-Supervision-Motivated Trajectory Balance Method for LLM Reasoning
+# FlowBalance: Verifier-Grounded Self-Improvement from On-Policy Reasoning Experience
 
 [![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](#citation) [![GitHub](https://img.shields.io/badge/FlowBalance-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowBalance) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowBalance-Blog/)
 
@@ -552,7 +552,7 @@ Historical source paths and checkpoints may retain `FlowSD`/`flowsd` labels. The
 
 ```bibtex
 @article{huang2026flowbalance,
-  title  = {FlowBalance: A Dense-Supervision-Motivated Trajectory Balance Method for LLM Reasoning},
+  title  = {FlowBalance: Verifier-Grounded Self-Improvement from On-Policy Reasoning Experience},
   author = {Zixun Huang and Kishan Panaganti and Haitao Mi and Leowei Liang},
   year   = {2026}
 }
