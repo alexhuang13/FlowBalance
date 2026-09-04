@@ -2,7 +2,7 @@
 
 # FlowBalance: Verifier-Grounded Self-Improvement from On-Policy Reasoning Experience
 
-[![Paper](https://arxiv.org/pdf/2609.03241)](#citation) [![GitHub](https://img.shields.io/badge/FlowBalance-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowBalance) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowBalance-Blog/)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/pdf/2609.03241) [![GitHub](https://img.shields.io/badge/FlowBalance-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexhuang13/FlowBalance) [![Blog](https://img.shields.io/badge/blog-2563EB?style=for-the-badge&logo=githubpages&logoColor=white)](https://alexhuang13.github.io/FlowBalance-Blog/)
 
 **Learn a distribution over correct reasoning trajectories—not just one correct answer.**
 
